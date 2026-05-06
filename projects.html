@@ -1,0 +1,2433 @@
+<!DOCTYPE html>
+<html lang="ka">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<meta name="description" content="Explore SABA ongoing and finished infrastructure projects across Georgia, including water supply, sewerage, drainage, road and civil works.">
+<meta name="keywords" content="SABA projects, infrastructure projects Georgia, water supply projects, sewerage projects, drainage projects, road works Georgia, ongoing projects, finished projects">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://saba.company/projects.html">
+
+<meta property="og:title" content="SABA Projects | Infrastructure Projects in Georgia">
+<meta property="og:description" content="Explore SABA ongoing and finished infrastructure projects across Georgia.">
+<meta property="og:image" content="https://images.unsplash.com/photo-1541888946425-d81bb19240f5?auto=format&fit=crop&w=1600&q=80">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="SABA">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="SABA Projects | Infrastructure Projects in Georgia">
+<meta name="twitter:description" content="Ongoing and finished water, sewerage, drainage and civil infrastructure projects in Georgia.">
+<meta name="twitter:image" content="https://images.unsplash.com/photo-1541888946425-d81bb19240f5?auto=format&fit=crop&w=1600&q=80">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  "name": "SABA Projects",
+  "url": "https://saba.company/projects.html",
+  "description": "Ongoing and finished infrastructure projects by SABA in Georgia.",
+  "isPartOf": {
+    "@type": "WebSite",
+    "name": "SABA",
+    "url": "https://saba.company"
+  }
+}
+</script>
+<meta name="google-site-verification" content="03oPsEvgyJRV7Co5yqfcudv4NznLyyk_io3KjrNcHC0" />
+<title>SABA Projects | Ongoing and Finished Infrastructure Projects in Georgia</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+
+<style>
+:root{
+  --dark:#0b1726;
+  --blue:#0b5ea8;
+  --blue2:#1378d1;
+  --gold:#d9a441;
+  --light:#f4f7fb;
+  --text:#263241;
+  --muted:#6d7785;
+  --shadow:0 20px 60px rgba(11,23,38,.15);
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:Arial,Helvetica,sans-serif;
+  background:var(--light);
+  color:var(--text);
+  line-height:1.6;
+}
+a{text-decoration:none;color:inherit}
+.container{width:min(1240px,calc(100% - 40px));margin:auto}
+
+.header{
+  background:linear-gradient(135deg,rgba(11,23,38,.96),rgba(11,94,168,.78)),url('https://images.unsplash.com/photo-1541888946425-d81bb19240f5?auto=format&fit=crop&w=1800&q=80') center/cover;
+  color:white;
+  padding:34px 0 72px;
+  transition:background-image .25s ease;
+}
+.nav{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:56px;
+  gap:12px;
+  flex-wrap:wrap;
+}
+.logo{display:inline-flex;align-items:center;min-height:44px}
+.logo img{max-width:170px;max-height:54px;display:block;object-fit:contain}
+.logo-text{font-size:30px;font-weight:900;letter-spacing:1px}
+.actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.back{
+  background:rgba(255,255,255,.12);
+  border:1px solid rgba(255,255,255,.18);
+  padding:12px 16px;
+  border-radius:12px;
+  font-weight:900;
+}
+.lang{
+  display:flex;
+  align-items:center;
+  gap:6px;
+  padding:5px;
+  border-radius:999px;
+  background:#edf3fa;
+}
+.lang button{
+  border:0;
+  border-radius:999px;
+  padding:8px 11px;
+  background:transparent;
+  color:#354256;
+  font-weight:800;
+  cursor:pointer;
+  transition:.2s ease;
+}
+.lang button.active{background:var(--blue);color:white}
+.eyebrow{
+  color:#f2c96f;
+  font-weight:900;
+  text-transform:uppercase;
+  letter-spacing:1.5px;
+  font-size:13px;
+  margin-bottom:16px;
+}
+h1{font-size:clamp(36px,6vw,68px);line-height:1;margin-bottom:16px}
+.subtitle{font-size:19px;color:rgba(255,255,255,.84);max-width:850px}
+
+.tabs-wrap{margin-top:-32px;position:relative;z-index:5}
+.tabs{display:flex;gap:10px;flex-wrap:wrap}
+.tab{
+  background:white;
+  border:1px solid #e7edf5;
+  color:var(--dark);
+  padding:13px 16px;
+  border-radius:14px;
+  font-weight:900;
+  box-shadow:var(--shadow);
+  cursor:pointer;
+}
+.tab.active{background:var(--blue);color:white}
+
+.page{padding:24px 0 70px}
+.layout{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) 390px;
+  gap:26px;
+  align-items:stretch;
+}
+.panel{
+  background:white;
+  border:1px solid #e1ebf5;
+  border-radius:24px;
+  box-shadow:var(--shadow);
+}
+.map-panel{
+  padding:16px;
+  min-height:calc(100vh - 270px);
+  display:flex;
+  flex-direction:column;
+  overflow:hidden;
+}
+.section-title{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap:20px;
+  margin-bottom:12px;
+}
+.section-title h2{
+  font-size:32px;
+  color:var(--dark);
+  line-height:1.15;
+}
+.map-holder{
+  width:100%;
+  height:620px;
+  min-height:620px;
+  max-height:620px;
+  min-width:0;
+  position:relative;
+  background:#fff;
+}
+#map{
+  width:100%;
+  height:620px;
+  min-height:620px;
+  max-height:620px;
+  border-radius:22px;
+  border:1px solid #dbe7f4;
+  overflow:hidden;
+  background:#fff;
+}
+.leaflet-container{
+  width:100%;
+  height:100%;
+  background:#fff!important;
+}
+.leaflet-pane.leaflet-tile-pane{display:none!important}
+
+.leaflet-interactive{cursor:default!important}
+.leaflet-marker-icon{cursor:pointer!important}
+
+.map-loading{
+  position:absolute;
+  inset:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-direction:column;
+  gap:12px;
+  color:#5d6f83;
+  font-weight:900;
+  background:#fff;
+  z-index:2;
+}
+.map-spinner{
+  width:38px;
+  height:38px;
+  border-radius:50%;
+  border:4px solid #d8e7fb;
+  border-top-color:#1378d1;
+  animation:spinMap 1s linear infinite;
+}
+@keyframes spinMap{to{transform:rotate(360deg)}}
+.map-loaded .map-loading{display:none}
+
+.map-warning{
+  display:none;
+  background:#fff8e8;
+  border:1px solid #f2d79a;
+  color:#6c4a00;
+  border-radius:16px;
+  padding:16px;
+  margin-bottom:16px;
+}
+.map-warning.show{display:block}
+
+.sidebar{
+  padding:22px;
+  min-height:calc(100vh - 270px);
+}
+.sidebar h3{
+  font-size:26px;
+  color:var(--dark);
+  margin-bottom:12px;
+}
+.city-list{display:grid;gap:12px}
+.city-card{
+  border:1px solid #e6eef7;
+  border-radius:18px;
+  padding:16px;
+  background:#fbfdff;
+  cursor:pointer;
+  transition:.18s;
+}
+.city-card:hover,.city-card.active{
+  border-color:#bdd8fb;
+  background:#eef6ff;
+  transform:translateY(-2px);
+}
+.city-top{
+  display:flex;
+  justify-content:space-between;
+  gap:12px;
+  align-items:flex-start;
+}
+.city-top h4{font-size:18px;color:var(--dark)}
+.count{
+  min-width:34px;
+  height:34px;
+  border-radius:999px;
+  background:#e8f3ff;
+  color:var(--blue2);
+  display:grid;
+  place-items:center;
+  font-weight:900;
+}
+.city-card p{
+  font-size:13px;
+  color:var(--muted);
+  margin-top:8px;
+}
+.empty{
+  background:white;
+  border:1px solid #e7edf5;
+  border-radius:20px;
+  padding:28px;
+  color:var(--muted);
+  box-shadow:0 12px 36px rgba(11,23,38,.08);
+}
+
+.info-window h3{font-size:18px;color:#0b1726;margin:0 0 6px}
+.info-window small{display:block;color:#6d7785;margin-bottom:10px}
+.info-project{
+  display:block;
+  padding:10px 11px;
+  border:1px solid #e4edf6;
+  border-radius:12px;
+  margin-top:8px;
+  background:#f7fbff;
+  cursor:pointer;
+}
+.info-project b{display:block;color:#0b1726;font-size:14px}
+.info-project span{display:block;color:#6d7785;font-size:12px;margin-top:3px}
+
+.project-info{
+  margin-top:14px;
+  padding:22px;
+}
+.project-info h3{font-size:24px;color:var(--dark);margin-bottom:10px}
+.project-preview{display:none}
+.project-preview.active{display:block}
+.project-preview img{
+  width:100%;
+  height:240px;
+  object-fit:cover;
+  border-radius:16px;
+  margin-bottom:14px;
+}
+.status-badge{
+  display:inline-block;
+  padding:7px 11px;
+  border-radius:999px;
+  background:#edf6ff;
+  color:#1d4776;
+  font-size:13px;
+  font-weight:900;
+  margin-bottom:12px;
+}
+
+.detail-overlay{
+  position:fixed;
+  inset:0;
+  background:rgba(8,21,36,.58);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:18px;
+  z-index:99999;
+}
+.detail-overlay.show{display:flex}
+.detail-card{
+  width:min(950px,100%);
+  max-height:90vh;
+  overflow:auto;
+  background:white;
+  border-radius:26px;
+  box-shadow:0 24px 60px rgba(11,23,38,.32);
+  border:1px solid #dce7f2;
+}
+.detail-image{
+  height:290px;
+  background-size:cover;
+  background-position:center;
+  background-color:#0b5ea8;
+  position:relative;
+}
+.detail-body{padding:28px}
+.detail-close{
+  position:absolute;
+  top:12px;
+  right:12px;
+  width:42px;
+  height:42px;
+  border:none;
+  border-radius:50%;
+  background:white;
+  box-shadow:0 8px 24px rgba(11,23,38,.22);
+  font-size:24px;
+  cursor:pointer;
+}
+.detail-tags{display:flex;gap:10px;flex-wrap:wrap;margin:16px 0}
+.tag{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:8px 12px;
+  border-radius:999px;
+  background:#edf6ff;
+  color:#1d4776;
+  font-size:13px;
+  font-weight:800;
+}
+.detail-text h2{font-size:34px;color:var(--dark);line-height:1.15;margin-bottom:10px}
+.detail-text p{color:#4f6073;line-height:1.8}
+
+[data-lang]{display:none}
+html[lang="ka"] [data-lang="ka"],
+html[lang="en"] [data-lang="en"]{display:initial}
+
+@media(max-width:1080px){
+  .layout{grid-template-columns:1fr}
+  .map-panel{min-height:auto}
+  .map-holder,#map{height:520px;min-height:520px;max-height:520px}
+  .sidebar{min-height:auto}
+}
+@media(max-width:720px){
+  .container{width:min(100% - 24px,1240px)}
+  .map-holder,#map{height:440px;min-height:440px;max-height:440px}
+  .section-title{display:block}
+  .detail-text h2{font-size:28px}
+}
+
+
+/* MUCH BIGGER map version */
+.container{
+  width:min(1600px,calc(100% - 24px)) !important;
+}
+.layout{
+  grid-template-columns:minmax(0,1fr) 300px !important;
+  gap:18px !important;
+}
+.map-panel{
+  padding:8px !important;
+}
+.map-holder{
+  height:820px !important;
+  min-height:820px !important;
+  max-height:820px !important;
+}
+#map{
+  height:820px !important;
+  min-height:820px !important;
+  max-height:820px !important;
+}
+.sidebar{
+  padding:18px !important;
+}
+.project-info{
+  display:none !important;
+}
+@media(max-width:1080px){
+  .layout{
+    grid-template-columns:1fr !important;
+  }
+  .map-holder,#map{
+    height:680px !important;
+    min-height:680px !important;
+    max-height:680px !important;
+  }
+}
+@media(max-width:720px){
+  .map-holder,#map{
+    height:540px !important;
+    min-height:540px !important;
+    max-height:540px !important;
+  }
+}
+
+
+
+/* Improved projects page visual design */
+body{
+  background:
+    radial-gradient(circle at 12% 10%, rgba(19,120,209,.10), transparent 26%),
+    radial-gradient(circle at 90% 18%, rgba(217,164,65,.11), transparent 28%),
+    #f4f7fb !important;
+}
+.header{
+  padding-bottom:92px !important;
+}
+.hero-subtitle{
+  margin-bottom:22px !important;
+}
+.hero-stats{
+  display:flex;
+  flex-wrap:wrap;
+  gap:12px;
+  margin-top:24px;
+}
+.hero-stat{
+  min-width:150px;
+  padding:14px 18px;
+  border-radius:18px;
+  background:rgba(255,255,255,.12);
+  border:1px solid rgba(255,255,255,.18);
+  backdrop-filter:blur(8px);
+}
+.hero-stat b{
+  display:block;
+  font-size:28px;
+  line-height:1.1;
+  color:#fff;
+}
+.hero-stat span{
+  color:rgba(255,255,255,.78);
+  font-size:13px;
+  font-weight:800;
+}
+.page{
+  margin-top:-40px;
+}
+.map-panel{
+  border:1px solid rgba(225,235,245,.9) !important;
+  background:linear-gradient(180deg,#ffffff,#f8fbff) !important;
+}
+.map-topbar{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-end;
+  gap:18px;
+  padding:10px 10px 18px;
+}
+.map-eyebrow,
+.gallery-eyebrow{
+  display:inline-block;
+  color:#0b5ea8;
+  font-size:12px;
+  font-weight:900;
+  letter-spacing:.13em;
+  text-transform:uppercase;
+  margin-bottom:6px;
+}
+.map-topbar h2,
+.gallery-head h2{
+  color:#0b1726;
+  font-size:30px;
+  line-height:1.15;
+}
+.map-note{
+  padding:9px 12px;
+  border-radius:999px;
+  background:#edf6ff;
+  color:#1d4776;
+  font-size:13px;
+  font-weight:900;
+  white-space:nowrap;
+}
+.map-holder{
+  border-radius:28px !important;
+  background:
+    linear-gradient(180deg,rgba(255,255,255,.92),rgba(247,251,255,.92)),
+    radial-gradient(circle at 50% 45%,rgba(19,120,209,.08),transparent 45%) !important;
+  box-shadow:inset 0 0 0 1px #dbe7f4, 0 18px 45px rgba(11,23,38,.08);
+  padding:8px;
+}
+#map{
+  border:none !important;
+  border-radius:22px !important;
+  background:transparent !important;
+}
+.leaflet-container{
+  background:transparent !important;
+}
+.sidebar{
+  background:linear-gradient(180deg,#ffffff,#f8fbff) !important;
+}
+.sidebar h3{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+.sidebar h3:before{
+  content:"";
+  width:12px;
+  height:12px;
+  border-radius:50%;
+  background:#1378d1;
+  box-shadow:0 0 0 5px rgba(19,120,209,.12);
+}
+.city-card{
+  box-shadow:0 10px 24px rgba(11,23,38,.05);
+}
+.city-card:hover{
+  box-shadow:0 15px 32px rgba(11,23,38,.10);
+}
+.project-info{
+  background:linear-gradient(180deg,#ffffff,#f7fbff) !important;
+  border:1px solid #e2edf7 !important;
+}
+.project-gallery-section{
+  padding:26px 0 90px;
+}
+.gallery-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-end;
+  gap:18px;
+  margin-bottom:18px;
+}
+.project-gallery{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:18px;
+}
+.gallery-card{
+  background:#fff;
+  border:1px solid #e1ebf5;
+  border-radius:22px;
+  overflow:hidden;
+  box-shadow:0 16px 38px rgba(11,23,38,.08);
+  cursor:pointer;
+  transition:transform .2s ease, box-shadow .2s ease;
+}
+.gallery-card:hover{
+  transform:translateY(-5px);
+  box-shadow:0 22px 48px rgba(11,23,38,.14);
+}
+.gallery-card-img{
+  height:180px;
+  background-size:cover;
+  background-position:center;
+  background-color:#0b5ea8;
+}
+.gallery-card-body{
+  padding:18px;
+}
+.gallery-card-body h3{
+  font-size:18px;
+  color:#0b1726;
+  line-height:1.25;
+  margin-bottom:8px;
+}
+.gallery-card-body p{
+  color:#6d7785;
+  font-size:14px;
+  line-height:1.55;
+  display:-webkit-box;
+  -webkit-line-clamp:3;
+  -webkit-box-orient:vertical;
+  overflow:hidden;
+}
+.gallery-meta{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+  margin-top:14px;
+  color:#496074;
+  font-size:13px;
+  font-weight:800;
+}
+@media(max-width:1080px){
+  .project-gallery{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .map-topbar{display:block}
+  .map-note{display:inline-block;margin-top:12px}
+}
+@media(max-width:720px){
+  .hero-stats{display:grid;grid-template-columns:1fr}
+  .project-gallery{grid-template-columns:1fr}
+}
+
+
+/* Tight map area: less white space, larger border map */
+.page{
+  padding:16px 0 48px !important;
+  margin-top:-46px !important;
+}
+.container{
+  width:min(1720px,calc(100% - 18px)) !important;
+}
+.layout{
+  grid-template-columns:minmax(0,1fr) 270px !important;
+  gap:12px !important;
+}
+.map-panel{
+  padding:6px !important;
+  border-radius:20px !important;
+  background:transparent !important;
+  border:0 !important;
+  box-shadow:none !important;
+  min-height:auto !important;
+}
+.map-holder{
+  height:860px !important;
+  min-height:860px !important;
+  max-height:860px !important;
+  padding:0 !important;
+  border-radius:20px !important;
+  box-shadow:0 18px 46px rgba(11,23,38,.10) !important;
+  background:#fff !important;
+}
+#map{
+  height:860px !important;
+  min-height:860px !important;
+  max-height:860px !important;
+  border-radius:20px !important;
+  border:1px solid #dbe7f4 !important;
+}
+.project-info{
+  display:none !important;
+}
+.sidebar{
+  padding:14px !important;
+  border-radius:20px !important;
+  min-height:auto !important;
+}
+.sidebar h3{
+  font-size:19px !important;
+  margin-bottom:12px !important;
+}
+.city-list{
+  gap:8px !important;
+}
+.city-card{
+  padding:11px 12px !important;
+  border-radius:14px !important;
+}
+.city-top h4{
+  font-size:15px !important;
+}
+.count{
+  min-width:28px !important;
+  height:28px !important;
+  font-size:13px !important;
+}
+.city-card p{
+  font-size:12px !important;
+  line-height:1.35 !important;
+  margin-top:5px !important;
+  display:-webkit-box !important;
+  -webkit-line-clamp:2 !important;
+  -webkit-box-orient:vertical !important;
+  overflow:hidden !important;
+}
+.project-gallery-section{
+  padding-top:24px !important;
+}
+@media(max-width:1200px){
+  .layout{
+    grid-template-columns:minmax(0,1fr) 250px !important;
+  }
+  .map-holder,#map{
+    height:760px !important;
+    min-height:760px !important;
+    max-height:760px !important;
+  }
+}
+@media(max-width:1080px){
+  .layout{
+    grid-template-columns:1fr !important;
+  }
+  .map-holder,#map{
+    height:650px !important;
+    min-height:650px !important;
+    max-height:650px !important;
+  }
+}
+@media(max-width:720px){
+  .container{
+    width:min(100% - 12px,1720px) !important;
+  }
+  .map-holder,#map{
+    height:520px !important;
+    min-height:520px !important;
+    max-height:520px !important;
+  }
+}
+
+
+/* Text/layout fix: map and city panel inline, shorter map */
+.header{
+  padding-bottom:72px !important;
+}
+.hero-subtitle{
+  margin-bottom:14px !important;
+}
+.hero-stats{
+  margin-top:14px !important;
+}
+.page{
+  margin-top:-34px !important;
+  padding-top:12px !important;
+}
+.layout{
+  display:grid !important;
+  grid-template-columns:minmax(0,1fr) 310px !important;
+  gap:14px !important;
+  align-items:start !important;
+}
+.map-holder,#map{
+  height:620px !important;
+  min-height:620px !important;
+  max-height:620px !important;
+}
+.map-panel{
+  padding:6px !important;
+}
+.sidebar{
+  padding:14px !important;
+  align-self:start !important;
+  max-height:620px !important;
+  overflow:auto !important;
+}
+.project-gallery-section{
+  padding-top:18px !important;
+}
+.gallery-head{
+  margin-bottom:14px !important;
+}
+@media(max-width:900px){
+  .layout{
+    grid-template-columns:1fr !important;
+  }
+  .map-holder,#map{
+    height:520px !important;
+    min-height:520px !important;
+    max-height:520px !important;
+  }
+  .sidebar{
+    max-height:none !important;
+    overflow:visible !important;
+  }
+}
+@media(max-width:720px){
+  .map-holder,#map{
+    height:460px !important;
+    min-height:460px !important;
+    max-height:460px !important;
+  }
+}
+
+
+/* 20-city test list compact scroll */
+.sidebar{
+  max-height:620px !important;
+  overflow:auto !important;
+}
+.sidebar::-webkit-scrollbar{
+  width:8px;
+}
+.sidebar::-webkit-scrollbar-thumb{
+  background:#c9d9ea;
+  border-radius:999px;
+}
+.city-card{
+  padding:10px 11px !important;
+}
+.city-card p{
+  -webkit-line-clamp:1 !important;
+}
+@media(max-width:900px){
+  .sidebar{
+    max-height:420px !important;
+  }
+}
+
+
+/* Zoom controls inside fixed map box */
+.leaflet-control-container{
+  display:block !important;
+}
+.leaflet-control-zoom{
+  border:none !important;
+  box-shadow:0 10px 24px rgba(11,23,38,.16) !important;
+}
+.leaflet-control-zoom a{
+  width:36px !important;
+  height:36px !important;
+  line-height:36px !important;
+  border:none !important;
+  color:#0b5ea8 !important;
+  font-weight:900 !important;
+}
+.leaflet-control-attribution{
+  display:none !important;
+}
+
+
+/* Move zoom controls below top tabs + status filter */
+.leaflet-top.leaflet-left{
+  top:54px !important;
+  left:14px !important;
+}
+.status-filter{
+  margin:0 0 14px;
+  padding:12px;
+  border:1px solid #e3edf7;
+  border-radius:16px;
+  background:#f7fbff;
+}
+.status-filter label{
+  display:block;
+  color:#344256;
+  font-size:12px;
+  font-weight:900;
+  margin-bottom:8px;
+  text-transform:uppercase;
+  letter-spacing:.06em;
+}
+.status-filter select{
+  width:100%;
+  border:1px solid #d8e7f5;
+  border-radius:12px;
+  padding:10px 12px;
+  background:white;
+  color:#263241;
+  font-weight:800;
+  outline:none;
+}
+.status-filter select:focus{
+  border-color:#1378d1;
+  box-shadow:0 0 0 3px rgba(19,120,209,.12);
+}
+@media(max-width:720px){
+  .leaflet-top.leaflet-left{
+    top:44px !important;
+    left:10px !important;
+  }
+}
+
+
+/* Footer social share buttons */
+.share-wrap{display:none !important;}
+.footer-share{
+  margin:28px 0 18px;
+  padding:18px;
+  border:1px solid rgba(255,255,255,.14);
+  border-radius:20px;
+  background:rgba(255,255,255,.06);
+}
+.footer-share-title{
+  font-weight:900;
+  color:inherit;
+  margin-bottom:12px;
+}
+.footer-share-buttons{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  align-items:center;
+}
+.footer-share-buttons button{
+  border:1px solid rgba(255,255,255,.18);
+  background:rgba(255,255,255,.08);
+  color:inherit;
+  border-radius:999px;
+  padding:10px 14px;
+  font-weight:900;
+  cursor:pointer;
+  transition:.18s ease;
+}
+.footer-share-buttons button:hover{
+  background:#0b5ea8;
+  color:#fff;
+  border-color:#0b5ea8;
+  transform:translateY(-1px);
+}
+.copy-status{
+  color:#8fd0ff;
+  font-size:13px;
+  font-weight:900;
+}
+footer .footer-share,
+.footer .footer-share{
+  color:#fff;
+}
+@media(max-width:720px){
+  .footer-share-buttons button{
+    font-size:13px;
+    padding:9px 11px;
+  }
+}
+
+
+/* FINAL FIX: project footer share readability + exact map/city alignment */
+body .footer-share{
+  background:#0b1726 !important;
+  border:1px solid rgba(255,255,255,.16) !important;
+  color:#ffffff !important;
+  box-shadow:0 18px 45px rgba(11,23,38,.18) !important;
+}
+body .footer-share-title,
+body .footer-share-title span{
+  color:#ffffff !important;
+}
+body .footer-share-buttons button{
+  background:rgba(255,255,255,.10) !important;
+  border:1px solid rgba(255,255,255,.22) !important;
+  color:#ffffff !important;
+}
+body .footer-share-buttons button span{
+  color:#ffffff !important;
+}
+body .footer-share-buttons button:hover{
+  background:#0b5ea8 !important;
+  border-color:#0b5ea8 !important;
+  color:#ffffff !important;
+}
+body .copy-status{
+  color:#8fd0ff !important;
+}
+
+/* Exact map/city geometry */
+:root{
+  --project-map-height:620px !important;
+  --project-side-width:310px !important;
+}
+.page{
+  padding-top:14px !important;
+}
+.layout{
+  display:grid !important;
+  grid-template-columns:minmax(0,1fr) var(--project-side-width) !important;
+  gap:14px !important;
+  align-items:start !important;
+}
+.map-panel,
+.sidebar{
+  box-sizing:border-box !important;
+  margin:0 !important;
+  height:var(--project-map-height) !important;
+  min-height:var(--project-map-height) !important;
+  max-height:var(--project-map-height) !important;
+  align-self:start !important;
+}
+.map-panel{
+  padding:0 !important;
+  overflow:hidden !important;
+}
+.map-holder,
+#map{
+  box-sizing:border-box !important;
+  width:100% !important;
+  height:var(--project-map-height) !important;
+  min-height:var(--project-map-height) !important;
+  max-height:var(--project-map-height) !important;
+  margin:0 !important;
+}
+.sidebar{
+  padding:14px !important;
+  overflow-y:auto !important;
+  overflow-x:hidden !important;
+}
+.sidebar h3{
+  margin-top:0 !important;
+}
+.status-filter{
+  position:sticky !important;
+  top:0 !important;
+  z-index:5 !important;
+  margin-top:0 !important;
+}
+.project-info{
+  display:none !important;
+}
+@media(max-width:1200px){
+  :root{
+    --project-map-height:580px !important;
+    --project-side-width:300px !important;
+  }
+}
+@media(max-width:900px){
+  .layout{
+    grid-template-columns:1fr !important;
+  }
+  :root{
+    --project-map-height:520px !important;
+  }
+  .sidebar{
+    height:auto !important;
+    min-height:0 !important;
+    max-height:420px !important;
+  }
+}
+@media(max-width:720px){
+  :root{
+    --project-map-height:460px !important;
+  }
+}
+
+
+/* Move map/city section down from category buttons */
+.tabs-wrap{
+  margin-bottom:28px !important;
+}
+.page{
+  padding-top:34px !important;
+  margin-top:0 !important;
+}
+.layout{
+  margin-top:0 !important;
+}
+.map-panel,
+.sidebar{
+  margin-top:0 !important;
+}
+@media(max-width:720px){
+  .tabs-wrap{
+    margin-bottom:22px !important;
+  }
+  .page{
+    padding-top:26px !important;
+  }
+}
+
+
+/* Automatic photo sizing */
+img{
+  max-width:100%;
+  height:auto;
+}
+.project-card-image,
+.gallery-card-img,
+.detail-image,
+.header{
+  background-size:cover !important;
+  background-position:center !important;
+  background-repeat:no-repeat !important;
+}
+
+
+/* FINAL footer layout exactly like requested */
+footer,
+.footer{
+  background:#0b1726 !important;
+  color:#ffffff !important;
+  padding:76px 0 0 !important;
+  overflow:hidden !important;
+}
+
+footer .container,
+.footer .container{
+  width:min(1500px,calc(100% - 90px)) !important;
+  max-width:1500px !important;
+  margin:0 auto !important;
+}
+
+#footerContactBox,
+footer .footer-share,
+.footer .footer-share{
+  width:100% !important;
+  min-height:112px !important;
+  margin:0 auto 28px !important;
+  padding:28px 48px !important;
+  border-radius:28px !important;
+  background:#172638 !important;
+  border:1px solid rgba(255,255,255,.14) !important;
+  box-shadow:none !important;
+  color:#ffffff !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:space-between !important;
+  gap:24px !important;
+  box-sizing:border-box !important;
+}
+
+#footerContactBox .footer-share-title,
+footer .footer-share .footer-share-title,
+.footer .footer-share .footer-share-title{
+  color:#ffffff !important;
+  font-size:24px !important;
+  font-weight:900 !important;
+  line-height:1.2 !important;
+  margin:0 !important;
+  white-space:nowrap !important;
+}
+
+#footerContactButtons,
+#footerContactBox .footer-share-buttons,
+footer .footer-share-buttons,
+.footer .footer-share-buttons{
+  display:flex !important;
+  align-items:center !important;
+  justify-content:flex-end !important;
+  gap:12px !important;
+  flex-wrap:wrap !important;
+  margin:0 !important;
+}
+
+#footerContactButtons a,
+footer .footer-share-buttons button,
+.footer .footer-share-buttons button,
+footer .footer-share-buttons a,
+.footer .footer-share-buttons a{
+  min-height:44px !important;
+  padding:10px 18px !important;
+  border-radius:999px !important;
+  background:rgba(255,255,255,.08) !important;
+  border:1px solid rgba(255,255,255,.18) !important;
+  color:#ffffff !important;
+  display:inline-flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  gap:8px !important;
+  font-size:15px !important;
+  line-height:1 !important;
+  font-weight:900 !important;
+  text-decoration:none !important;
+  cursor:pointer !important;
+  box-shadow:none !important;
+  transition:.18s ease !important;
+}
+
+#footerContactButtons a:hover,
+footer .footer-share-buttons button:hover,
+.footer .footer-share-buttons button:hover,
+footer .footer-share-buttons a:hover,
+.footer .footer-share-buttons a:hover{
+  background:#0b5ea8 !important;
+  border-color:#0b5ea8 !important;
+  color:#ffffff !important;
+  transform:translateY(-1px) !important;
+}
+
+#footerContactButtons svg{
+  width:18px !important;
+  height:18px !important;
+  display:block !important;
+  fill:currentColor !important;
+}
+
+#footerContactButtons .whatsapp,
+#footerContactButtons .wechat,
+#footerContactButtons .facebook,
+#footerContactButtons .x,
+#footerContactButtons .linkedin{
+  color:#ffffff !important;
+}
+
+.footer-bottom,
+.copyright,
+footer > .container > p,
+.footer > .container > p{
+  color:rgba(255,255,255,.82) !important;
+  font-size:15px !important;
+}
+
+.copy-status{
+  color:#8fd0ff !important;
+  font-size:13px !important;
+  font-weight:900 !important;
+}
+
+.contact-topbar,
+.topbar,
+.top-bar,
+.announcement{
+  font-size:13px !important;
+  line-height:1.2 !important;
+}
+.contact-topbar *,
+.topbar *,
+.top-bar *,
+.announcement *{
+  font-size:13px !important;
+  line-height:1.2 !important;
+  font-weight:700 !important;
+}
+
+@media(max-width:900px){
+  footer,
+  .footer{
+    padding-top:44px !important;
+  }
+  footer .container,
+  .footer .container{
+    width:min(100% - 28px,1500px) !important;
+  }
+  #footerContactBox,
+  footer .footer-share,
+  .footer .footer-share{
+    min-height:0 !important;
+    padding:22px !important;
+    border-radius:22px !important;
+    flex-direction:column !important;
+    align-items:flex-start !important;
+  }
+  #footerContactBox .footer-share-title,
+  footer .footer-share .footer-share-title,
+  .footer .footer-share .footer-share-title{
+    white-space:normal !important;
+    font-size:20px !important;
+  }
+  #footerContactButtons,
+  #footerContactBox .footer-share-buttons,
+  footer .footer-share-buttons,
+  .footer .footer-share-buttons{
+    justify-content:flex-start !important;
+  }
+}
+
+
+/* FINAL footer alignment + original small top contact text */
+.contact-topbar,
+.topbar,
+.top-bar{
+  font-size: 12px !important; /* Shrunk text */
+  line-height: 1.25 !important;
+  /* Simulates the 1180px container constraint without breaking JS */
+  padding: 9px max(20px, calc((100vw - 1180px) / 2)) !important;
+}
+.top-contact-left,
+.top-contact-right,
+.top-contact-right a,
+.contact-topbar a,
+.topbar a,
+.top-bar a{
+  font-size: 12px !important; /* Shrunk text */
+  line-height: 1.25 !important;
+  font-weight: 800 !important;
+}
+
+
+/* FINAL footer 1180px container sizing */
+footer .footer-share,
+.footer .footer-share,
+#footerContactBox{
+  width:min(1180px, calc(100% - 40px)) !important; /* Matches main container exactly */
+  max-width:1180px !important;
+  margin:22px auto !important;
+  padding:22px 40px !important; /* Reduced padding slightly to fit new width */
+  border-radius:24px !important;
+  box-sizing:border-box !important;
+  background:#172638 !important;
+  border:1px solid rgba(255,255,255,.12) !important;
+  color:#ffffff !important;
+  min-height:96px !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:space-between !important;
+  gap:24px !important;
+}
+footer .footer-share-title,
+.footer .footer-share-title{
+  margin:0 !important;
+  font-size:18px !important; /* Shrunk title text */
+  font-weight:900 !important;
+  line-height:1.2 !important;
+  color:#ffffff !important;
+  white-space:nowrap !important;
+}
+/* Keep the .footer-share-buttons display block the same, just update the button fonts below */
+footer .footer-share-buttons button,
+.footer .footer-share-buttons button,
+.footer-contact-buttons a{
+  min-height:44px !important;
+  padding:10px 16px !important;
+  border-radius:999px !important;
+  display:inline-flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  gap:8px !important;
+  font-size:13px !important; /* Shrunk button text */
+  line-height:1 !important;
+  font-weight:900 !important;
+  color:#ffffff !important;
+  background:rgba(255,255,255,.08) !important;
+  border:1px solid rgba(255,255,255,.18) !important;
+  text-decoration:none !important;
+  box-shadow:none !important;
+}
+
+
+/* FINAL: copyright bar at the very bottom of footer */
+footer,
+.footer{
+  display:flex !important;
+  flex-direction:column !important;
+}
+footer .copyright,
+.footer .copyright,
+footer .footer-bottom,
+.footer .footer-bottom,
+footer .bottom,
+.footer .bottom{
+  order:999 !important;
+  width:100% !important;
+  margin-top:34px !important;
+  padding:24px max(20px, calc((100vw - 1180px) / 2)) !important;
+  border-top:1px solid rgba(255,255,255,.12) !important;
+  background:#0b1726 !important;
+  color:rgba(255,255,255,.82) !important;
+  box-sizing:border-box !important;
+}
+footer > .container:last-child,
+.footer > .container:last-child{
+  margin-bottom:0 !important;
+}
+
+
+
+/* SABA FINAL FIX: compact footer; copyright at absolute bottom aligned with footer boxes */
+footer,
+.footer{
+  padding:22px 0 14px !important;
+  display:flex !important;
+  flex-direction:column !important;
+  gap:10px !important;
+  background:#101f31 !important;
+}
+footer .container,
+.footer .container{
+  width:100% !important;
+  max-width:none !important;
+  margin:0 !important;
+  padding:0 !important;
+}
+footer .footer-share,
+.footer .footer-share,
+#footerContactBox{
+  order:10 !important;
+  width:min(1180px, calc(100% - 40px)) !important;
+  max-width:1180px !important;
+  margin:0 auto 10px !important;
+  padding:14px 24px !important;
+  min-height:64px !important;
+  border-radius:18px !important;
+  box-sizing:border-box !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:space-between !important;
+  gap:16px !important;
+}
+footer .footer-share-title,
+.footer .footer-share-title,
+#footerContactBox .footer-share-title{
+  font-size:15px !important;
+  line-height:1.15 !important;
+  margin:0 !important;
+  white-space:nowrap !important;
+}
+footer .footer-share-buttons,
+.footer .footer-share-buttons,
+#footerContactButtons{
+  display:flex !important;
+  flex-wrap:wrap !important;
+  justify-content:flex-end !important;
+  align-items:center !important;
+  gap:8px !important;
+}
+footer .footer-share-buttons button,
+.footer .footer-share-buttons button,
+footer .footer-share-buttons a,
+.footer .footer-share-buttons a,
+.footer-contact-buttons a{
+  min-height:34px !important;
+  padding:8px 12px !important;
+  font-size:12px !important;
+  line-height:1 !important;
+  border-radius:999px !important;
+}
+footer .copyright,
+.footer .copyright,
+footer .footer-bottom,
+.footer .footer-bottom,
+footer .bottom,
+.footer .bottom{
+  order:9999 !important;
+  width:min(1180px, calc(100% - 40px)) !important;
+  max-width:1180px !important;
+  margin:0 auto !important;
+  padding:10px 18px !important;
+  min-height:38px !important;
+  border-radius:14px !important;
+  border-top:0 !important;
+  background:#0b1726 !important;
+  box-sizing:border-box !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:space-between !important;
+  gap:14px !important;
+  color:rgba(255,255,255,.72) !important;
+  font-size:12px !important;
+  line-height:1.2 !important;
+}
+footer .copyright *,
+.footer .copyright *,
+footer .footer-bottom *,
+.footer .footer-bottom *{
+  font-size:12px !important;
+  line-height:1.2 !important;
+}
+@media(max-width:700px){
+  footer .footer-share,
+  .footer .footer-share,
+  #footerContactBox,
+  footer .copyright,
+  .footer .copyright,
+  footer .footer-bottom,
+  .footer .footer-bottom{
+    width:min(100% - 28px,1180px) !important;
+  }
+  footer .footer-share,
+  .footer .footer-share,
+  #footerContactBox,
+  footer .copyright,
+  .footer .copyright,
+  footer .footer-bottom,
+  .footer .footer-bottom{
+    align-items:flex-start !important;
+    flex-direction:column !important;
+  }
+  footer .footer-share-buttons,
+  .footer .footer-share-buttons,
+  #footerContactButtons{
+    justify-content:flex-start !important;
+  }
+}
+
+
+
+/* SABA FIX: make footer Contact us and Share this page fonts exactly same size */
+footer .footer-share .footer-share-title,
+.footer .footer-share .footer-share-title,
+#footerContactBox .footer-share-title,
+#footerContactBox .footer-share-title span,
+footer .footer-share .footer-share-title span,
+.footer .footer-share .footer-share-title span{
+  font-size:15px !important;
+  line-height:1.15 !important;
+  font-weight:900 !important;
+}
+#footerContactButtons a,
+#footerContactBox .footer-share-buttons a,
+footer .footer-share-buttons button,
+.footer .footer-share-buttons button,
+footer .footer-share-buttons a,
+.footer .footer-share-buttons a{
+  font-size:12px !important;
+  line-height:1 !important;
+  font-weight:900 !important;
+}
+@media(max-width:700px){
+  footer .footer-share .footer-share-title,
+  .footer .footer-share .footer-share-title,
+  #footerContactBox .footer-share-title,
+  #footerContactBox .footer-share-title span,
+  footer .footer-share .footer-share-title span,
+  .footer .footer-share .footer-share-title span{
+    font-size:15px !important;
+  }
+}
+
+</style>
+
+<style>
+/* SABA FIX: remove duplicate upper footer Contact us block */
+#footerContactApps, .footer-contact-apps{display:none!important;}
+</style>
+</head>
+
+<body>
+<header class="header" id="pageHeader">
+  <div class="container">
+    <div class="nav">
+      <a class="logo" href="index.html" id="siteLogoLink"><img src="https://drive.google.com/thumbnail?id=10JxjUb4dLHPlMlu1Cce01paOK0Kc9FXY&sz=w1000" alt="SABA"></a>
+      <div class="actions">
+        <a class="back" href="index.html#projects"><span data-lang="ka">← უკან</span><span data-lang="en">← Back</span></a>
+        <div class="lang">
+          <button id="kaBtn" class="active" onclick="setLanguage('ka')">GE</button>
+          <button id="enBtn" onclick="setLanguage('en')">EN</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="eyebrow"><span data-lang="ka">პროექტების რუკა</span><span data-lang="en">Projects Map</span></div>
+    <h1 id="pageTitle"></h1>
+
+    <p class="subtitle hero-subtitle">
+      <span data-lang="ka">მიმდინარე და დასრულებული პროექტები საქართველოს მასშტაბით.</span>
+      <span data-lang="en">Ongoing and finished projects across Georgia.</span>
+    </p>
+    <div class="hero-stats">
+      <div class="hero-stat"><b id="totalProjects">0</b><span data-lang="ka">პროექტი</span><span data-lang="en">Projects</span></div>
+      <div class="hero-stat"><b id="totalCities">0</b><span data-lang="ka">ქალაქი</span><span data-lang="en">Cities</span></div>
+      <div class="hero-stat"><b id="currentCategoryLabel">—</b><span data-lang="ka">მიმართულება</span><span data-lang="en">Category</span></div>
+    </div>
+  </div>
+</header>
+
+<div class="container tabs-wrap">
+  <div class="tabs">
+    <button class="tab" data-category="water" onclick="changeCategory('water')"><span data-lang="ka">წყალი</span><span data-lang="en">Water</span></button>
+    <button class="tab" data-category="roads" onclick="changeCategory('roads')"><span data-lang="ka">გზები / სამოქალაქო</span><span data-lang="en">Roads / Civil</span></button>
+    <button class="tab" data-category="drainage" onclick="changeCategory('drainage')"><span data-lang="ka">კანალიზაცია / დრენაჟი</span><span data-lang="en">Sewerage / Drainage</span></button>
+  </div>
+</div>
+
+<main class="page">
+  <div class="container layout">
+    <section class="panel map-panel">
+
+      <div id="mapWarning" class="map-warning"></div><div class="map-holder" id="mapHolder">
+        <div id="map">
+          <div class="map-loading" id="mapLoading">
+            <div class="map-spinner"></div>
+            <div>
+              <span data-lang="ka">რუკა იტვირთება...</span>
+              <span data-lang="en">Loading map...</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel project-info">
+        <div id="placeholder">
+          <p style="color:#6d7785;font-style:italic;">
+            <span data-lang="ka">პროექტის ინფორმაცია გამოჩნდება აქ.</span>
+            <span data-lang="en">Project information will appear here.</span>
+          </p>
+        </div>
+        <div id="projectPreview" class="project-preview">
+          <img id="pImage" src="" alt="Project image">
+          <h3 id="pTitle"></h3>
+          <span id="pStatus" class="status-badge"></span>
+          <p><b><span data-lang="ka">ლოკაცია:</span><span data-lang="en">Location:</span></b> <span id="pCity"></span></p>
+          <p><b><span data-lang="ka">აღწერა:</span><span data-lang="en">Description:</span></b> <span id="pDesc"></span></p>
+        </div>
+      </div>
+    </section>
+
+    <aside class="panel sidebar">
+      <h3><span data-lang="ka">ქალაქები პროექტებით</span><span data-lang="en">Cities with projects</span></h3>
+
+      <div class="status-filter">
+        <label>
+          <span data-lang="ka">სტატუსით გაფილტვრა</span>
+          <span data-lang="en">Filter by status</span>
+        </label>
+        <select id="statusFilter" onchange="setStatusFilter(this.value)">
+          <option value="all">
+            All
+          </option>
+          <option value="ongoing">
+            Ongoing
+          </option>
+          <option value="finished">
+            Finished
+          </option>
+          <option value="planned">
+            Planned
+          </option>
+        </select>
+      </div>
+
+      <div id="cityList" class="city-list"></div>
+      <div id="cityEmpty" class="empty" style="display:none;">
+        <b><span data-lang="ka">ქალაქები ვერ მოიძებნა.</span><span data-lang="en">No cities found.</span></b>
+      </div>
+    </aside>
+  </div>
+
+  <section class="project-gallery-section">
+    <div class="container">
+      <div class="gallery-head">
+        <div>
+          <span class="gallery-eyebrow"><span data-lang="ka">პროექტების სია</span><span data-lang="en">Project list</span></span>
+          <h2><span data-lang="ka">მიმდინარე და დასრულებული პროექტები</span><span data-lang="en">Ongoing and finished projects</span></h2>
+        </div>
+      </div>
+      <div id="projectGallery" class="project-gallery"></div>
+    </div>
+  </section>
+
+</main>
+
+<div class="detail-overlay" id="detailOverlay" onclick="if(event.target===this) closeDetail()">
+  <div class="detail-card">
+    <div id="detailImage" class="detail-image"><button class="detail-close" onclick="closeDetail()">×</button></div>
+    <div class="detail-body">
+      <div class="detail-text">
+        <h2 id="detailTitle"></h2>
+        <div class="detail-tags">
+          <span class="tag">📍 <span id="detailLocation"></span></span>
+          <span class="tag">● <span id="detailStatus"></span></span>
+          <span class="tag"># <span id="detailCategory"></span></span>
+        </div>
+        <p id="detailDescription"></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+
+function normalizeImageUrl(url, size = 1600){
+  if(!url) return "";
+
+  let value = String(url).trim();
+
+  // Google Drive formats:
+  // https://drive.google.com/file/d/FILE_ID/view?usp=sharing
+  // https://drive.google.com/open?id=FILE_ID
+  // https://drive.google.com/uc?id=FILE_ID
+  // https://drive.google.com/thumbnail?id=FILE_ID
+  let driveId = "";
+
+  const fileMatch = value.match(/drive\.google\.com\/file\/d\/([^/]+)/i);
+  if(fileMatch && fileMatch[1]) driveId = fileMatch[1];
+
+  const idMatch = value.match(/[?&]id=([^&]+)/i);
+  if(!driveId && idMatch && idMatch[1]) driveId = idMatch[1];
+
+  if(driveId){
+    return `https://drive.google.com/thumbnail?id=${encodeURIComponent(driveId)}&sz=w${size}`;
+  }
+
+  return value;
+}
+
+function cssImageUrl(url, size = 1600){
+  const normalized = normalizeImageUrl(url, size);
+  return normalized ? `url('${String(normalized).replace(/'/g, "")}')` : "";
+}
+
+function applyResponsiveImages(){
+  document.querySelectorAll("img").forEach(img=>{
+    if(!img.dataset.originalSrc){
+      img.dataset.originalSrc = img.getAttribute("src") || "";
+    }
+
+    const fixed = normalizeImageUrl(img.dataset.originalSrc || img.getAttribute("src"), 1600);
+    if(fixed && img.getAttribute("src") !== fixed){
+      img.setAttribute("src", fixed);
+    }
+
+    img.setAttribute("loading", "lazy");
+    img.style.maxWidth = "100%";
+    img.style.height = img.style.height || "auto";
+    img.style.objectFit = img.style.objectFit || "cover";
+
+    img.onerror = function(){
+      this.onerror = null;
+      this.src = "https://images.unsplash.com/photo-1541888946425-d81bb19240f5?auto=format&fit=crop&w=1200&q=80";
+    };
+  });
+}
+
+document.addEventListener("DOMContentLoaded", applyResponsiveImages);
+
+</script>
+<script>
+let map;
+let georgiaLayer;
+let markers = [];
+let currentLang = localStorage.getItem("siteLanguage") || "ka";
+let currentCategory = new URLSearchParams(location.search).get("category") || "water";
+let allProjects = [];
+let groupedCities = [];
+let currentStatusFilter = "all";
+const htmlTag = document.documentElement;
+
+const defaultSettings = {
+  logo_url:"https://drive.google.com/thumbnail?id=10JxjUb4dLHPlMlu1Cce01paOK0Kc9FXY&sz=w1000",
+  logo_alt:"SABA",
+  water_title_ka:"წყლის ინფრასტრუქტურა",
+  water_title_en:"Water Infrastructure",
+  water_image_url:"https://images.unsplash.com/photo-1581094288338-2314dddb7ece?auto=format&fit=crop&w=1400&q=80",
+  roads_title_ka:"გზები და სამოქალაქო სამუშაოები",
+  roads_title_en:"Roads & Civil Works",
+  roads_image_url:"https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?auto=format&fit=crop&w=1400&q=80",
+  drainage_title_ka:"კანალიზაცია და დრენაჟი",
+  drainage_title_en:"Sewerage & Drainage",
+  drainage_image_url:"https://images.unsplash.com/photo-1591955506264-3f5a6834570a?auto=format&fit=crop&w=1400&q=80"
+};
+
+let siteSettings = {...defaultSettings};
+
+const categoryMap = {
+  water:["water"],
+  roads:["roads","civil","concrete"],
+  drainage:["drainage","sewerage"]
+};
+
+
+
+const demoProjects = [
+  {id:"demo-tbilisi",category:"water",title_ka:"თბილისის წყალმომარაგების ქსელი",title_en:"Tbilisi Water Supply Network",description_ka:"სატესტო აღწერა: ქალაქის წყალმომარაგების ქსელის რეაბილიტაცია და ხარისხის კონტროლი.",description_en:"Demo description: rehabilitation and quality control of the city water network.",city_ka:"თბილისი",city_en:"Tbilisi",location_ka:"თბილისი, საქართველო",location_en:"Tbilisi, Georgia",latitude:41.7151,longitude:44.8271,status_ka:"მიმდინარე",status_en:"Ongoing",image_url:"https://images.unsplash.com/photo-1541888946425-d81bb19240f5?auto=format&fit=crop&w=1200&q=80"},
+  {id:"demo-kutaisi",category:"water",title_ka:"ქუთაისის რეზერვუარის სამუშაოები",title_en:"Kutaisi Reservoir Works",description_ka:"სატესტო აღწერა: რეზერვუარისა და მილსადენის სამშენებლო სამუშაოები.",description_en:"Demo description: reservoir and pipeline construction works.",city_ka:"ქუთაისი",city_en:"Kutaisi",location_ka:"ქუთაისი, საქართველო",location_en:"Kutaisi, Georgia",latitude:42.2679,longitude:42.6946,status_ka:"დასრულებული",status_en:"Finished",image_url:"https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&w=1200&q=80"},
+  {id:"demo-batumi",category:"drainage",title_ka:"ბათუმის სანიაღვრე სისტემა",title_en:"Batumi Stormwater System",description_ka:"სატესტო აღწერა: სანიაღვრე კოლექტორებისა და ჭების მოწყობა.",description_en:"Demo description: stormwater collectors and manholes installation.",city_ka:"ბათუმი",city_en:"Batumi",location_ka:"ბათუმი, საქართველო",location_en:"Batumi, Georgia",latitude:41.6168,longitude:41.6367,status_ka:"მიმდინარე",status_en:"Ongoing",image_url:"https://images.unsplash.com/photo-1591955506264-3f5a6834570a?auto=format&fit=crop&w=1200&q=80"},
+  {id:"demo-rustavi",category:"roads",title_ka:"რუსთავის სამოქალაქო სამუშაოები",title_en:"Rustavi Civil Works",description_ka:"სატესტო აღწერა: ბეტონის კონსტრუქციები და მიწის სამუშაოები.",description_en:"Demo description: concrete structures and earthworks.",city_ka:"რუსთავი",city_en:"Rustavi",location_ka:"რუსთავი, საქართველო",location_en:"Rustavi, Georgia",latitude:41.5495,longitude:44.9932,status_ka:"დასრულებული",status_en:"Finished",image_url:"https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?auto=format&fit=crop&w=1200&q=80"},
+  {id:"demo-gori",category:"roads",title_ka:"გორის გზის რეაბილიტაცია",title_en:"Gori Road Rehabilitation",description_ka:"სატესტო აღწერა: გზის საფარის აღდგენა და წყალარინების ელემენტები.",description_en:"Demo description: road surface restoration and drainage elements.",city_ka:"გორი",city_en:"Gori",location_ka:"გორი, საქართველო",location_en:"Gori, Georgia",latitude:41.9854,longitude:44.1086,status_ka:"დაგეგმილი",status_en:"Planned",image_url:"https://images.unsplash.com/photo-1513828583688-c52646db42da?auto=format&fit=crop&w=1200&q=80"},
+  {id:"demo-zugdidi",category:"water",title_ka:"ზუგდიდის წყალსადენის განახლება",title_en:"Zugdidi Water Network Renewal",description_ka:"სატესტო აღწერა: ჩამკეტი არმატურის, მილების და ქსელის განახლება.",description_en:"Demo description: renewal of valves, pipes and distribution networks.",city_ka:"ზუგდიდი",city_en:"Zugdidi",location_ka:"ზუგდიდი, საქართველო",location_en:"Zugdidi, Georgia",latitude:42.5088,longitude:41.8709,status_ka:"მიმდინარე",status_en:"Ongoing",image_url:"https://images.unsplash.com/photo-1581094288338-2314dddb7ece?auto=format&fit=crop&w=1200&q=80"},
+  {id:"demo-telavi",category:"drainage",title_ka:"თელავის საკანალიზაციო კოლექტორი",title_en:"Telavi Sewer Collector",description_ka:"სატესტო აღწერა: საკანალიზაციო კოლექტორისა და ჭების მოწყობა.",description_en:"Demo description: construction of sewer collector and manholes.",city_ka:"თელავი",city_en:"Telavi",location_ka:"თელავი, საქართველო",location_en:"Telavi, Georgia",latitude:41.9198,longitude:45.4732,status_ka:"დასრულებული",status_en:"Finished",image_url:"https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?auto=format&fit=crop&w=1200&q=80"},
+  {id:"demo-lanchkhuti",category:"water",title_ka:"ლანჩხუთის წყალმომარაგების ოპტიმიზაცია",title_en:"Lanchkhuti Water Supply Optimization",description_ka:"სატესტო აღწერა: მაგისტრალური მილსადენები და გამანაწილებელი ქსელი.",description_en:"Demo description: transmission pipelines and distribution network.",city_ka:"ლანჩხუთი",city_en:"Lanchkhuti",location_ka:"ლანჩხუთი, საქართველო",location_en:"Lanchkhuti, Georgia",latitude:42.0903,longitude:42.0324,status_ka:"მიმდინარე",status_en:"Ongoing",image_url:"https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&w=1200&q=80"},
+  {id:"demo-tkibuli",category:"water",title_ka:"ტყიბულის წყალსადენის რეაბილიტაცია",title_en:"Tkibuli Water Network Rehabilitation",description_ka:"სატესტო აღწერა: ქსელის რეაბილიტაცია და მოსახლეობასთან კოორდინაცია.",description_en:"Demo description: network rehabilitation and resident coordination.",city_ka:"ტყიბული",city_en:"Tkibuli",location_ka:"ტყიბული, საქართველო",location_en:"Tkibuli, Georgia",latitude:42.3512,longitude:42.9987,status_ka:"დასრულებული",status_en:"Finished",image_url:"https://images.unsplash.com/photo-1581094288338-2314dddb7ece?auto=format&fit=crop&w=1200&q=80"},
+  {id:"demo-mtskheta",category:"roads",title_ka:"მცხეთის ინფრასტრუქტურული სამუშაოები",title_en:"Mtskheta Infrastructure Works",description_ka:"სატესტო აღწერა: მისასვლელი გზები და სამოქალაქო ინფრასტრუქტურა.",description_en:"Demo description: access roads and civil infrastructure.",city_ka:"მცხეთა",city_en:"Mtskheta",location_ka:"მცხეთა, საქართველო",location_en:"Mtskheta, Georgia",latitude:41.8451,longitude:44.7188,status_ka:"დაგეგმილი",status_en:"Planned",image_url:"https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?auto=format&fit=crop&w=1200&q=80"},
+
+  {id:"demo-poti",category:"drainage",title_ka:"ფოთის დრენაჟის გაუმჯობესება",title_en:"Poti Drainage Improvement",description_ka:"სატესტო აღწერა: დრენაჟის არხებისა და კოლექტორების მოწყობა.",description_en:"Demo description: drainage channels and collectors.",city_ka:"ფოთი",city_en:"Poti",location_ka:"ფოთი, საქართველო",location_en:"Poti, Georgia",latitude:42.1462,longitude:41.6719,status_ka:"მიმდინარე",status_en:"Ongoing",image_url:"https://images.unsplash.com/photo-1591955506264-3f5a6834570a?auto=format&fit=crop&w=1200&q=80"},
+  {id:"demo-senaki",category:"water",title_ka:"სენაკის წყალმომარაგების სამუშაოები",title_en:"Senaki Water Supply Works",description_ka:"სატესტო აღწერა: ქსელის მონაკვეთების განახლება და ტესტირება.",description_en:"Demo description: network section renewal and testing.",city_ka:"სენაკი",city_en:"Senaki",location_ka:"სენაკი, საქართველო",location_en:"Senaki, Georgia",latitude:42.2696,longitude:42.0675,status_ka:"დასრულებული",status_en:"Finished",image_url:"https://images.unsplash.com/photo-1581094288338-2314dddb7ece?auto=format&fit=crop&w=1200&q=80"},
+  {id:"demo-ozurgeti",category:"drainage",title_ka:"ოზურგეთის სანიაღვრე სამუშაოები",title_en:"Ozurgeti Stormwater Works",description_ka:"სატესტო აღწერა: სანიაღვრე ქსელის აღდგენა და ჭების მოწყობა.",description_en:"Demo description: stormwater network restoration and manholes.",city_ka:"ოზურგეთი",city_en:"Ozurgeti",location_ka:"ოზურგეთი, საქართველო",location_en:"Ozurgeti, Georgia",latitude:41.9244,longitude:42.0068,status_ka:"დაგეგმილი",status_en:"Planned",image_url:"https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?auto=format&fit=crop&w=1200&q=80"},
+  {id:"demo-kobuleti",category:"roads",title_ka:"ქობულეთის გზის სამუშაოები",title_en:"Kobuleti Road Works",description_ka:"სატესტო აღწერა: გზის საფარი, ბორდიურები და წყალსარინი ელემენტები.",description_en:"Demo description: road pavement, curbs and drainage elements.",city_ka:"ქობულეთი",city_en:"Kobuleti",location_ka:"ქობულეთი, საქართველო",location_en:"Kobuleti, Georgia",latitude:41.8167,longitude:41.7753,status_ka:"მიმდინარე",status_en:"Ongoing",image_url:"https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?auto=format&fit=crop&w=1200&q=80"},
+  {id:"demo-borjomi",category:"water",title_ka:"ბორჯომის წყლის ქსელის სამუშაოები",title_en:"Borjomi Water Network Works",description_ka:"სატესტო აღწერა: რთულ რელიეფზე წყალსადენის მონაკვეთების მოწყობა.",description_en:"Demo description: water network sections in complex terrain.",city_ka:"ბორჯომი",city_en:"Borjomi",location_ka:"ბორჯომი, საქართველო",location_en:"Borjomi, Georgia",latitude:41.8386,longitude:43.3793,status_ka:"დაგეგმილი",status_en:"Planned",image_url:"https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&w=1200&q=80"},
+  {id:"demo-akhaltsikhe",category:"roads",title_ka:"ახალციხის სამოქალაქო სამუშაოები",title_en:"Akhaltsikhe Civil Works",description_ka:"სატესტო აღწერა: ბეტონის სამუშაოები და მიწის სამუშაოების მართვა.",description_en:"Demo description: concrete works and earthworks management.",city_ka:"ახალციხე",city_en:"Akhaltsikhe",location_ka:"ახალციხე, საქართველო",location_en:"Akhaltsikhe, Georgia",latitude:41.6390,longitude:42.9826,status_ka:"დასრულებული",status_en:"Finished",image_url:"https://images.unsplash.com/photo-1513828583688-c52646db42da?auto=format&fit=crop&w=1200&q=80"},
+  {id:"demo-maraneuli",category:"drainage",title_ka:"მარნეულის საკანალიზაციო ქსელი",title_en:"Marneuli Sewer Network",description_ka:"სატესტო აღწერა: საკანალიზაციო ქსელის რეაბილიტაცია და მიერთებები.",description_en:"Demo description: sewer network rehabilitation and connections.",city_ka:"მარნეული",city_en:"Marneuli",location_ka:"მარნეული, საქართველო",location_en:"Marneuli, Georgia",latitude:41.4759,longitude:44.8089,status_ka:"მიმდინარე",status_en:"Ongoing",image_url:"https://images.unsplash.com/photo-1591955506264-3f5a6834570a?auto=format&fit=crop&w=1200&q=80"},
+  {id:"demo-gurjaani",category:"water",title_ka:"გურჯაანის წყლის სისტემის განახლება",title_en:"Gurjaani Water System Upgrade",description_ka:"სატესტო აღწერა: წყლის სისტემის განახლება და წნევის ზონების მოწესრიგება.",description_en:"Demo description: water system upgrade and pressure zone improvement.",city_ka:"გურჯაანი",city_en:"Gurjaani",location_ka:"გურჯაანი, საქართველო",location_en:"Gurjaani, Georgia",latitude:41.7429,longitude:45.8018,status_ka:"დაგეგმილი",status_en:"Planned",image_url:"https://images.unsplash.com/photo-1581094288338-2314dddb7ece?auto=format&fit=crop&w=1200&q=80"},
+  {id:"demo-sagarejo",category:"roads",title_ka:"საგარეჯოს გზისა და წყალარინების სამუშაოები",title_en:"Sagarejo Road and Drainage Works",description_ka:"სატესტო აღწერა: გზისა და წყალარინების ინფრასტრუქტურის რეაბილიტაცია.",description_en:"Demo description: rehabilitation of road and drainage infrastructure.",city_ka:"საგარეჯო",city_en:"Sagarejo",location_ka:"საგარეჯო, საქართველო",location_en:"Sagarejo, Georgia",latitude:41.7339,longitude:45.3315,status_ka:"დასრულებული",status_en:"Finished",image_url:"https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?auto=format&fit=crop&w=1200&q=80"},
+  {id:"demo-bolnisi",category:"drainage",title_ka:"ბოლნისის დრენაჟის სისტემა",title_en:"Bolnisi Drainage System",description_ka:"სატესტო აღწერა: ადგილობრივი დრენაჟის ქსელის მოწყობა და ჭების მონტაჟი.",description_en:"Demo description: local drainage network and manhole installation.",city_ka:"ბოლნისი",city_en:"Bolnisi",location_ka:"ბოლნისი, საქართველო",location_en:"Bolnisi, Georgia",latitude:41.4479,longitude:44.5384,status_ka:"მიმდინარე",status_en:"Ongoing",image_url:"https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?auto=format&fit=crop&w=1200&q=80"}
+];
+
+
+
+function safe(v){
+  return String(v||"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]));
+}
+
+function safeAttr(v){
+  return String(v||"").replace(/['"<>]/g,"");
+}
+
+function getName(p,ka,en){
+  return currentLang==="ka" ? (p[ka]||p[en]||"") : (p[en]||p[ka]||"");
+}
+
+function getCategoryConfig(category){
+  if(category==="roads") return {ka:siteSettings.roads_title_ka,en:siteSettings.roads_title_en,image:siteSettings.roads_image_url};
+  if(category==="drainage") return {ka:siteSettings.drainage_title_ka,en:siteSettings.drainage_title_en,image:siteSettings.drainage_image_url};
+  return {ka:siteSettings.water_title_ka,en:siteSettings.water_title_en,image:siteSettings.water_image_url};
+}
+
+
+function updateStatusFilterLabels(){
+  const filter=document.getElementById("statusFilter");
+  if(!filter) return;
+  const current=filter.value || "all";
+  const labels=currentLang==="ka"
+    ? {all:"ყველა",ongoing:"მიმდინარე",finished:"დასრულებული",planned:"დაგეგმილი"}
+    : {all:"All",ongoing:"Ongoing",finished:"Finished",planned:"Planned"};
+  Array.from(filter.options).forEach(opt=>{
+    opt.textContent=labels[opt.value] || opt.value;
+  });
+  filter.value=current;
+}
+
+function setLanguage(lang){
+  currentLang=lang;
+  htmlTag.setAttribute("lang",lang);
+  localStorage.setItem("siteLanguage",lang);
+  document.getElementById("kaBtn").classList.toggle("active",lang==="ka");
+  document.getElementById("enBtn").classList.toggle("active",lang==="en");
+  updateStatusFilterLabels();
+  updateTitle();
+  renderAll();
+}
+
+function updateTitle(){
+  const t=getCategoryConfig(currentCategory);
+  document.getElementById("pageTitle").innerHTML='<span data-lang="ka">'+safe(t.ka)+'</span><span data-lang="en">'+safe(t.en)+'</span>';
+
+  const header=document.getElementById("pageHeader");
+  if(t.image){
+    header.style.backgroundImage=`linear-gradient(135deg,rgba(11,23,38,.96),rgba(11,94,168,.78)),${cssImageUrl(t.image,1600)}`;
+  }
+}
+
+function changeCategory(category){
+  currentCategory=category;
+  history.replaceState(null,"","projects.html?category="+category);
+  renderAll();
+}
+
+
+function normalizeStatusValue(value){
+  const s=String(value||"").trim().toLowerCase();
+  if(!s) return "";
+  if(s.includes("ongoing") || s.includes("progress") || s.includes("მიმდინარე")) return "ongoing";
+  if(s.includes("finished") || s.includes("completed") || s.includes("დასრულ")) return "finished";
+  if(s.includes("planned") || s.includes("დაგეგმ")) return "planned";
+  return s;
+}
+
+function getProjectStatusKey(project){
+  return normalizeStatusValue(project.status_en || project.status_ka || "");
+}
+
+function setStatusFilter(value){
+  currentStatusFilter=value || "all";
+  renderAll();
+}
+
+function getFilteredProjects(){
+  const allowed=categoryMap[currentCategory]||["water"];
+  return allProjects.filter(p=>{
+    const categoryOk=allowed.includes(String(p.category||"").toLowerCase());
+    if(!categoryOk) return false;
+    if(currentStatusFilter==="all") return true;
+    return getProjectStatusKey(p)===currentStatusFilter;
+  });
+}
+
+function hasCoords(p){
+  const lat=parseFloat(p.latitude);
+  const lng=parseFloat(p.longitude);
+  return Number.isFinite(lat) && Number.isFinite(lng) && lat >= 40 && lat <= 44.5 && lng >= 39 && lng <= 48.5;
+}
+
+function cleanCityName(name){
+  return String(name||"").trim();
+}
+
+function isCountryOnly(name){
+  const n=cleanCityName(name).toLowerCase();
+  return n==="georgia" || n==="საქართველო" || n==="sakartvelo";
+}
+
+function getCityKa(p){
+  const city=cleanCityName(p.city_ka);
+  if(city && !isCountryOnly(city)) return city;
+  return "";
+}
+
+function getCityEn(p){
+  const city=cleanCityName(p.city_en);
+  if(city && !isCountryOnly(city)) return city;
+  return "";
+}
+
+function groupProjects(){
+  const groups={};
+
+  for(const p of getFilteredProjects()){
+    if(!hasCoords(p)) continue;
+
+    const cityKa=getCityKa(p);
+    const cityEn=getCityEn(p);
+
+    if(!cityKa && !cityEn) continue;
+
+    const key=(cityEn || cityKa).toLowerCase();
+    const lat=parseFloat(p.latitude);
+    const lng=parseFloat(p.longitude);
+
+    if(!groups[key]){
+      groups[key]={
+        key,
+        lat,
+        lng,
+        nameKa:cityKa || cityEn,
+        nameEn:cityEn || cityKa,
+        projects:[]
+      };
+    }
+
+    groups[key].projects.push(p);
+  }
+
+  groupedCities=Object.values(groups).sort((a,b)=>a.nameEn.localeCompare(b.nameEn));
+}
+
+function initMap(){
+  map=L.map("map",{
+    zoomControl:true,
+    scrollWheelZoom:true,
+    doubleClickZoom:true,
+    boxZoom:false,
+    keyboard:false,
+    dragging:true,
+    touchZoom:true,
+    tap:true,
+    preferCanvas:true,
+    attributionControl:false,
+    maxBoundsViscosity:1.0
+  }).setView([42.1,43.5],7);
+
+  setTimeout(()=>{map.invalidateSize(); markMapLoaded();},300);
+  window.addEventListener("load",()=>setTimeout(()=>{map.invalidateSize(); markMapLoaded();},500));
+  window.addEventListener("resize",refreshMapSize);
+
+  const mapElement=document.getElementById("map");
+  if(mapElement){
+    mapElement.addEventListener("mouseleave",()=>{
+      resetMapToGeorgia();
+    });
+  }
+
+  loadGeorgiaBorder();
+  loadProjects();
+}
+
+function markMapLoaded(){
+  const holder=document.getElementById("mapHolder");
+  if(holder) holder.classList.add("map-loaded");
+}
+
+function refreshMapSize(){
+  if(!map) return;
+  setTimeout(()=>map.invalidateSize(),100);
+  setTimeout(()=>map.invalidateSize(),400);
+}
+
+function fitToGeorgia(){
+  if(georgiaLayer){
+    const bounds=georgiaLayer.getBounds();
+    map.fitBounds(bounds,{padding:[8,8],animate:false});
+    const minZoom=map.getZoom();
+    map.setMinZoom(minZoom);
+    map.setMaxZoom(11);
+    map.setMaxBounds(bounds.pad(0.18));
+  }else{
+    map.setView([42.1,43.5],7,{animate:false});
+  }
+  refreshMapSize();
+}
+
+function resetMapToGeorgia(){
+  if(!map || !georgiaLayer) return;
+  map.closePopup();
+  map.fitBounds(georgiaLayer.getBounds(),{padding:[8,8],animate:true,duration:.35});
+}
+
+function drawGeorgiaBorder(geojson){
+  if(georgiaLayer){
+    georgiaLayer.remove();
+  }
+
+  georgiaLayer=L.geoJSON(geojson,{
+    style:{
+      color:"#1378d1",
+      weight:4,
+      opacity:1,
+      fill:false
+    }
+  }).addTo(map);
+
+  fitToGeorgia();
+  renderMarkers();
+  markMapLoaded();
+}
+
+function loadGeorgiaBorder(){
+  const cached=localStorage.getItem("sabaGeorgiaBorderGeoJson");
+
+  fetch("https://nominatim.openstreetmap.org/search?country=Georgia&polygon_geojson=1&format=json&limit=1")
+    .then(r=>r.json())
+    .then(data=>{
+      if(data && data[0] && data[0].geojson){
+        localStorage.setItem("sabaGeorgiaBorderGeoJson",JSON.stringify(data[0].geojson));
+        drawGeorgiaBorder(data[0].geojson);
+      }else if(cached){
+        drawGeorgiaBorder(JSON.parse(cached));
+      }else{
+        showBorderLoadMessage();
+      }
+    })
+    .catch(()=>{
+      if(cached){
+        drawGeorgiaBorder(JSON.parse(cached));
+      }else{
+        showBorderLoadMessage();
+      }
+    });
+}
+
+function showBorderLoadMessage(){
+  const warning=document.getElementById("mapWarning");
+  if(warning){
+    warning.style.display="block";
+    warning.classList.add("show");
+    warning.innerHTML=currentLang==="ka"
+      ? "საქართველოს საზღვარი დროებით ვერ ჩაიტვირთა. გთხოვთ განაახლოთ გვერდი."
+      : "Georgia border could not load now. Please refresh the page.";
+  }
+  markMapLoaded();
+  map.setView([42.1,43.5],7,{animate:false});
+  refreshMapSize();
+}
+
+function renderMarkers(){
+  if(!map) return;
+
+  markers.forEach(m=>m.remove());
+  markers=[];
+
+  groupedCities.forEach(group=>{
+    const marker=L.marker([group.lat,group.lng]).addTo(map);
+    marker.on("mouseover",()=>showInfo(group,marker));
+    marker.on("click",()=>showInfo(group,marker));
+    markers.push(marker);
+  });
+
+  fitToGeorgia();
+}
+
+function showInfo(group,marker){
+  const city=currentLang==="ka" ? group.nameKa : group.nameEn;
+  const html=`<div class="info-window"><h3>${safe(city)}</h3><small>${group.projects.length} ${currentLang==="ka"?"პროექტი":"project(s)"}</small>${group.projects.map((p,i)=>`<div class="info-project" onclick="openProject('${safeAttr(String(p.id||i))}')"><b>${safe(getName(p,"title_ka","title_en"))}</b><span>${safe(getName(p,"status_ka","status_en"))}</span></div>`).join("")}</div>`;
+  marker.bindPopup(html).openPopup();
+}
+
+function renderCityList(){
+  const list=document.getElementById("cityList");
+  const empty=document.getElementById("cityEmpty");
+
+  empty.style.display=groupedCities.length ? "none" : "block";
+
+  list.innerHTML=groupedCities.map(g=>`
+    <div class="city-card" onclick="focusCity('${safeAttr(g.key)}')">
+      <div class="city-top">
+        <h4>${safe(currentLang==="ka" ? g.nameKa : g.nameEn)}</h4>
+        <div class="count">${g.projects.length}</div>
+      </div>
+      <p>${g.projects.slice(0,3).map(p=>safe(getName(p,"title_ka","title_en"))).join(" • ")}</p>
+    </div>
+  `).join("");
+}
+
+function focusCity(key){
+  const g=groupedCities.find(x=>x.key===key);
+  if(!g) return;
+
+  map.setView([g.lat,g.lng],10,{animate:true});
+  const marker=markers.find(m=>Math.abs(m.getLatLng().lat-g.lat)<0.0001 && Math.abs(m.getLatLng().lng-g.lng)<0.0001);
+  if(marker) showInfo(g,marker);
+}
+
+function showPreview(p){
+  document.getElementById("placeholder").style.display="none";
+  document.getElementById("projectPreview").classList.add("active");
+  document.getElementById("pTitle").textContent=getName(p,"title_ka","title_en");
+  document.getElementById("pStatus").textContent=getName(p,"status_ka","status_en");
+  document.getElementById("pCity").textContent=getName(p,"location_ka","location_en") || getName(p,"city_ka","city_en");
+  document.getElementById("pDesc").textContent=getName(p,"description_ka","description_en");
+  document.getElementById("pImage").src=normalizeImageUrl(p.image_url || getCategoryConfig(currentCategory).image || "https://images.unsplash.com/photo-1541888081640-0c460dce3d32?auto=format&fit=crop&w=700&q=80", 1400);
+}
+
+function openProject(id){
+  const p=getFilteredProjects().find(x=>String(x.id)===String(id)) || getFilteredProjects()[0];
+  if(!p) return;
+
+  showPreview(p);
+
+  document.getElementById("detailTitle").textContent=getName(p,"title_ka","title_en");
+  document.getElementById("detailDescription").textContent=getName(p,"description_ka","description_en");
+  document.getElementById("detailLocation").textContent=getName(p,"location_ka","location_en") || getName(p,"city_ka","city_en");
+  document.getElementById("detailStatus").textContent=getName(p,"status_ka","status_en");
+  document.getElementById("detailCategory").textContent=getCategoryConfig(currentCategory)[currentLang];
+  document.getElementById("detailImage").style.backgroundImage=cssImageUrl(p.image_url || getCategoryConfig(currentCategory).image || "https://images.unsplash.com/photo-1541888946425-d81bb19240f5?auto=format&fit=crop&w=1600&q=80", 1600);
+  document.getElementById("detailOverlay").classList.add("show");
+}
+
+function closeDetail(){
+  document.getElementById("detailOverlay").classList.remove("show");
+}
+
+
+function updateStats(){
+  const filtered=getFilteredProjects();
+  const totalProjects=document.getElementById("totalProjects");
+  const totalCities=document.getElementById("totalCities");
+  const currentCategoryLabel=document.getElementById("currentCategoryLabel");
+  if(totalProjects) totalProjects.textContent=filtered.length;
+  if(totalCities) totalCities.textContent=groupedCities.length;
+  if(currentCategoryLabel) currentCategoryLabel.textContent=getCategoryConfig(currentCategory)[currentLang];
+}
+
+function renderProjectGallery(){
+  const gallery=document.getElementById("projectGallery");
+  if(!gallery) return;
+
+  const projects=getFilteredProjects();
+  gallery.innerHTML=projects.map((p,i)=>{
+    const title=safe(getName(p,"title_ka","title_en"));
+    const desc=safe(getName(p,"description_ka","description_en"));
+    const city=safe(getName(p,"city_ka","city_en") || getName(p,"location_ka","location_en"));
+    const status=safe(getName(p,"status_ka","status_en"));
+    const image=safeAttr(normalizeImageUrl(p.image_url || getCategoryConfig(currentCategory).image || "https://images.unsplash.com/photo-1541888946425-d81bb19240f5?auto=format&fit=crop&w=1200&q=80", 1200));
+    const id=safeAttr(String(p.id || i));
+
+    return `
+      <article class="gallery-card" onclick="openProject('${id}')">
+        <div class="gallery-card-img" style="background-image:url('${image}')"></div>
+        <div class="gallery-card-body">
+          <h3>${title}</h3>
+          <p>${desc}</p>
+          <div class="gallery-meta">
+            <span>📍 ${city}</span>
+            <span>${status}</span>
+          </div>
+        </div>
+      </article>
+    `;
+  }).join("");
+}
+
+function renderAll(){
+  document.querySelectorAll(".tab").forEach(btn=>btn.classList.toggle("active",btn.dataset.category===currentCategory));
+  updateTitle();
+  groupProjects();
+  renderCityList();
+  renderMarkers();
+  updateStats();
+  renderProjectGallery();
+}
+
+function logoWithCacheBust(url){
+  if(!url) return "";
+  const sep=url.includes("?")?"&":"?";
+  return `${url}${sep}v=${Date.now()}`;
+}
+
+function applyLogo(){
+  const link=document.getElementById("siteLogoLink");
+  const logoSrc = normalizeImageUrl(siteSettings.logo_url, 1000);
+  if(logoSrc){
+    link.innerHTML=`<img src="${logoWithCacheBust(logoSrc)}" alt="${siteSettings.logo_alt||"SABA"}" onerror="this.parentElement.innerHTML='<img src=&quot;https://drive.google.com/thumbnail?id=10JxjUb4dLHPlMlu1Cce01paOK0Kc9FXY&sz=w1000&quot; alt=&quot;SABA&quot;>'">`;
+  }else{
+    link.innerHTML='<span class="logo-text">SABA</span>';
+  }
+}
+
+async function loadSiteSettings(){
+  try{
+    const cached=localStorage.getItem("saba_site_settings_cache");
+    if(cached) siteSettings={...defaultSettings,...JSON.parse(cached)};
+  }catch(e){}
+  applyLogo();
+
+  try{
+    const res=await fetch(`/api/settings?t=${Date.now()}`, {cache:"no-store"});
+    const data=await res.json();
+    siteSettings={...defaultSettings,...(data||{})};
+    localStorage.setItem("saba_site_settings_cache", JSON.stringify(data||{}));
+  }catch(e){
+    siteSettings={...defaultSettings,...siteSettings};
+  }
+
+  applyLogo();
+  updateTitle();
+}
+
+async function loadProjects(){
+  try{
+    const res=await fetch("/api/projects");
+    allProjects=await res.json();
+    if(!Array.isArray(allProjects)) allProjects=[];
+  }catch(e){
+    allProjects=[];
+  }
+
+  // Demo fallback for visual testing. When Supabase has real projects, real data will be shown.
+  if(!allProjects.length){
+    allProjects=demoProjects;
+  }
+
+  setLanguage(currentLang);
+}
+
+loadSiteSettings().then(initMap);
+
+
+function getShareUrl(){
+  return window.location.href;
+}
+
+function getShareText(){
+  return document.documentElement.lang==="ka"
+    ? "SABA-ს მიმდინარე და დასრულებული პროექტები"
+    : "SABA ongoing and finished projects";
+}
+
+function sharePage(platform){
+  const url=encodeURIComponent(getShareUrl());
+  const text=encodeURIComponent(getShareText());
+  let shareUrl="";
+
+  if(platform==="facebook"){
+    shareUrl=`https://www.facebook.com/sharer/sharer.php?u=${url}`;
+  }else if(platform==="linkedin"){
+    shareUrl=`https://www.linkedin.com/sharing/share-offsite/?url=${url}`;
+  }else if(platform==="whatsapp"){
+    shareUrl=`https://wa.me/?text=${text}%20${url}`;
+  }
+
+  if(shareUrl){
+    window.open(shareUrl,"_blank","noopener,noreferrer,width=900,height=650");
+  }
+}
+
+async function copyPageLink(){
+  const status=document.getElementById("copyStatus");
+  try{
+    await navigator.clipboard.writeText(getShareUrl());
+    if(status){
+      status.textContent=document.documentElement.lang==="ka" ? "კოპირებულია" : "Copied";
+      setTimeout(()=>status.textContent="",1800);
+    }
+  }catch(e){
+    if(status){
+      status.textContent=document.documentElement.lang==="ka" ? "ვერ დაკოპირდა" : "Copy failed";
+      setTimeout(()=>status.textContent="",1800);
+    }
+  }
+}
+
+</script>
+
+<footer class="footer">
+      <div id="footerContactBox" class="footer-share footer-contact-box">
+        <div class="footer-share-title">
+          <span data-lang="ka">დაგვიკავშირდით</span>
+          <span data-lang="en">Contact us</span>
+        </div>
+        <div id="footerContactButtons" class="footer-share-buttons footer-contact-buttons"></div>
+      </div>
+
+      <div class="footer-share">
+        <div class="footer-share-title">
+          <span data-lang="ka">გააზიარე გვერდი</span>
+          <span data-lang="en">Share this page</span>
+        </div>
+        <div class="footer-share-buttons">
+          <button type="button" onclick="sharePage('facebook')" aria-label="Share on Facebook">Facebook</button>
+          <button type="button" onclick="sharePage('linkedin')" aria-label="Share on LinkedIn">LinkedIn</button>
+          <button type="button" onclick="sharePage('whatsapp')" aria-label="Share on WhatsApp">WhatsApp</button>
+          <button type="button" onclick="copyPageLink()" aria-label="Copy link">
+            <span data-lang="ka">ბმულის კოპირება</span>
+            <span data-lang="en">Copy link</span>
+          </button>
+          <span id="copyStatus" class="copy-status"></span>
+        </div>
+      </div>
+
+      <div class="footer-bottom copyright">
+        <span><strong>SABA</strong> © <span id="year"></span></span>
+        <span>
+          <span data-lang="ka">თბილისი, საქართველო</span>
+          <span data-lang="en">Tbilisi, Georgia</span>
+        </span>
+      </div>
+</footer>
+
+
+<script>
+(function(){
+  function digitsOnly(value){return String(value || "").replace(/[^\d+]/g, "");}
+  function phoneForApp(value){
+    let phone = digitsOnly(value);
+    if(phone.startsWith("+")) phone = phone.slice(1);
+    if(phone.startsWith("00")) phone = phone.slice(2);
+    return phone;
+  }
+  function normalizeSocialUrl(value){
+    const v = String(value || "").trim();
+    if(!v) return "";
+    if(v.startsWith("http://") || v.startsWith("https://")) return v;
+    return "https://" + v;
+  }
+  const icons = {
+    whatsapp:`<svg viewBox="0 0 32 32" aria-hidden="true"><path d="M16.1 3.2C9 3.2 3.2 8.9 3.2 16c0 2.4.7 4.7 1.9 6.7L3.6 28.8l6.3-1.6c1.9 1 4 1.6 6.2 1.6 7.1 0 12.8-5.7 12.8-12.8S23.2 3.2 16.1 3.2zm0 23.4c-2 0-3.8-.5-5.4-1.5l-.4-.2-3.7 1 1-3.6-.2-.4c-1.1-1.7-1.7-3.7-1.7-5.8 0-5.8 4.7-10.6 10.5-10.6S26.6 10.2 26.6 16 21.9 26.6 16.1 26.6zm5.8-7.9c-.3-.2-1.9-.9-2.2-1-.3-.1-.5-.2-.7.2-.2.3-.8 1-1 1.2-.2.2-.4.2-.7.1-.3-.2-1.3-.5-2.5-1.5-.9-.8-1.5-1.8-1.7-2.1-.2-.3 0-.5.1-.7.1-.1.3-.4.5-.5.2-.2.2-.3.3-.5.1-.2 0-.4 0-.5-.1-.2-.7-1.7-1-2.3-.3-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1.1 1.1-1.1 2.7s1.1 3.1 1.3 3.3c.2.2 2.2 3.4 5.4 4.7.8.3 1.4.5 1.8.7.8.2 1.5.2 2.1.1.6-.1 1.9-.8 2.2-1.5.3-.7.3-1.4.2-1.5-.1-.1-.3-.2-.6-.4z"/></svg>`,
+    wechat:`<svg viewBox="0 0 32 32" aria-hidden="true"><path d="M12.8 6.1C7.3 6.1 2.9 9.8 2.9 14.4c0 2.6 1.4 4.9 3.7 6.4l-.9 3 3.4-1.7c1.1.3 2.4.6 3.7.6.4 0 .8 0 1.2-.1-.3-.9-.4-1.8-.4-2.7 0-4.8 4.5-8.7 10.1-8.7h.4c-1.4-3-5.7-5.1-11.3-5.1zm-3.3 6.6c-.8 0-1.4-.6-1.4-1.3s.6-1.3 1.4-1.3 1.4.6 1.4 1.3-.7 1.3-1.4 1.3zm6.5 0c-.8 0-1.4-.6-1.4-1.3s.6-1.3 1.4-1.3 1.4.6 1.4 1.3-.6 1.3-1.4 1.3zM29.1 19.8c0-3.9-3.9-7-8.7-7s-8.7 3.1-8.7 7 3.9 7 8.7 7c1 0 2-.2 2.9-.5l2.9 1.5-.8-2.5c2.3-1.3 3.7-3.3 3.7-5.5zm-11.5-1.2c-.7 0-1.2-.5-1.2-1.1s.5-1.1 1.2-1.1 1.2.5 1.2 1.1-.5 1.1-1.2 1.1zm5.7 0c-.7 0-1.2-.5-1.2-1.1s.5-1.1 1.2-1.1 1.2.5 1.2 1.1-.5 1.1-1.2 1.1z"/></svg>`,
+    facebook:`<svg viewBox="0 0 32 32" aria-hidden="true"><path d="M18.6 30V17.2h4.3l.7-5h-5V9c0-1.4.4-2.4 2.5-2.4h2.7V2.1c-.5-.1-2.1-.2-4-.2-4 0-6.8 2.5-6.8 7v3.9H8.5v5H13V30h5.6z"/></svg>`,
+    x:`<svg viewBox="0 0 32 32" aria-hidden="true"><path d="M18.8 13.7 29.8 1h-2.6l-9.6 11.1L10 1H1.2l11.5 16.7L1.2 31h2.6l10-11.6L21.8 31h8.8L18.8 13.7zm-3.5 4.1-1.2-1.7L4.9 3h3.8l7.5 10.7 1.2 1.7 9.8 14h-3.8l-8.1-11.6z"/></svg>`,
+    linkedin:`<svg viewBox="0 0 32 32" aria-hidden="true"><path d="M7.3 10.5H2.1V30h5.2V10.5zM4.7 1.2C3 1.2 1.8 2.4 1.8 4s1.1 2.8 2.8 2.8h.1c1.8 0 2.9-1.2 2.9-2.8S6.5 1.2 4.7 1.2zM30.2 18.8c0-5.2-2.8-8.7-7.3-8.7-3.3 0-4.8 1.8-5.6 3.1v-2.7h-5.2c.1 1.8 0 19.5 0 19.5h5.2V19.1c0-.6 0-1.2.2-1.6.5-1.2 1.6-2.4 3.4-2.4 2.4 0 3.4 1.8 3.4 4.5V30h5.2V18.8h.7z"/></svg>`
+  };
+  function renderFooterContact(settings){
+    const s = settings || {};
+    let box = document.getElementById("footerContactBox");
+    if(!box){
+      const share = document.querySelector("footer .footer-share, .footer .footer-share");
+      if(share){
+        box = document.createElement("div");
+        box.id = "footerContactBox";
+        box.className = "footer-share footer-contact-box";
+        box.innerHTML = `<div class="footer-share-title"><span data-lang="ka">დაგვიკავშირდით</span><span data-lang="en">Contact us</span></div><div id="footerContactButtons" class="footer-share-buttons footer-contact-buttons"></div>`;
+        share.parentNode.insertBefore(box, share);
+      }
+    }
+    const buttons = document.getElementById("footerContactButtons");
+    if(!buttons) return;
+    const phone = s.phone || "+0322995406";
+    const wa = phoneForApp(s.whatsapp_number || phone);
+    const wc = phoneForApp(s.wechat_number || phone);
+    const links = [
+      wa ? ["whatsapp","WhatsApp",`https://wa.me/${wa}`] : null,
+      wc ? ["wechat","WeChat",`weixin://dl/chat?${wc}`] : null,
+      s.facebook_url ? ["facebook","Facebook",normalizeSocialUrl(s.facebook_url)] : null,
+      s.x_url ? ["x","X",normalizeSocialUrl(s.x_url)] : null,
+      s.linkedin_url ? ["linkedin","LinkedIn",normalizeSocialUrl(s.linkedin_url)] : null
+    ].filter(Boolean);
+    buttons.innerHTML = links.map(([cls,label,url])=>`<a class="${cls}" href="${url}" target="_blank" rel="noopener noreferrer">${icons[cls]}<span>${label}</span></a>`).join("");
+  }
+  async function init(){
+    let data = {};
+    try{
+      const res = await fetch("/api/settings");
+      data = await res.json();
+    }catch(e){}
+    renderFooterContact(data || {});
+    setTimeout(()=>renderFooterContact(data || {}),800);
+  }
+  document.addEventListener("DOMContentLoaded", init);
+})();
+</script>
+
+
+
+<script>
+/* FINAL FIX: single source for contact settings. This runs last and overrides older hardcoded email/phone scripts. */
+(function(){
+  const DEFAULT_CONTACT = {
+    topbar_text_ka: "ინფრასტრუქტურული და სამშენებლო გადაწყვეტილებები საქართველოში",
+    topbar_text_en: "Infrastructure and construction solutions in Georgia",
+    email: "info@sabagroup.org",
+    phone: "+0322995406",
+    whatsapp_number: "+0322995406",
+    wechat_number: "+0322995406",
+    facebook_url: "",
+    x_url: "",
+    linkedin_url: ""
+  };
+  const CONTACT_CACHE_KEY = "sabaContactSettings";
+  function esc(v){return String(v || "").replace(/[&<>\"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;"}[c]));}
+  function digitsOnly(value){return String(value || "").replace(/[^\d+]/g, "");}
+  function phoneForApp(value){let p=digitsOnly(value); if(p.startsWith("+")) p=p.slice(1); if(p.startsWith("00")) p=p.slice(2); return p;}
+  function normalizeUrl(value){const v=String(value||"").trim(); if(!v) return ""; return /^https?:\/\//i.test(v) ? v : "https://" + v;}
+  function getCached(){try{return JSON.parse(localStorage.getItem(CONTACT_CACHE_KEY)||"{}");}catch(e){return {};}}
+  function saveCached(settings){try{localStorage.setItem(CONTACT_CACHE_KEY, JSON.stringify(settings||{}));}catch(e){}}
+  const icons = {
+    whatsapp:`<svg viewBox="0 0 32 32" aria-hidden="true"><path d="M16.1 3.2C9 3.2 3.2 8.9 3.2 16c0 2.4.7 4.7 1.9 6.7L3.6 28.8l6.3-1.6c1.9 1 4 1.6 6.2 1.6 7.1 0 12.8-5.7 12.8-12.8S23.2 3.2 16.1 3.2zm0 23.4c-2 0-3.8-.5-5.4-1.5l-.4-.2-3.7 1 1-3.6-.2-.4c-1.1-1.7-1.7-3.7-1.7-5.8 0-5.8 4.7-10.6 10.5-10.6S26.6 10.2 26.6 16 21.9 26.6 16.1 26.6zm5.8-7.9c-.3-.2-1.9-.9-2.2-1-.3-.1-.5-.2-.7.2-.2.3-.8 1-1 1.2-.2.2-.4.2-.7.1-.3-.2-1.3-.5-2.5-1.5-.9-.8-1.5-1.8-1.7-2.1-.2-.3 0-.5.1-.7.1-.1.3-.4.5-.5.2-.2.2-.3.3-.5.1-.2 0-.4 0-.5-.1-.2-.7-1.7-1-2.3-.3-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1.1 1.1-1.1 2.7s1.1 3.1 1.3 3.3c.2.2 2.2 3.4 5.4 4.7.8.3 1.4.5 1.8.7.8.2 1.5.2 2.1.1.6-.1 1.9-.8 2.2-1.5.3-.7.3-1.4.2-1.5-.1-.1-.3-.2-.6-.4z"/></svg>`,
+    wechat:`<svg viewBox="0 0 32 32" aria-hidden="true"><path d="M12.8 6.1C7.3 6.1 2.9 9.8 2.9 14.4c0 2.6 1.4 4.9 3.7 6.4l-.9 3 3.4-1.7c1.1.3 2.4.6 3.7.6.4 0 .8 0 1.2-.1-.3-.9-.4-1.8-.4-2.7 0-4.8 4.5-8.7 10.1-8.7h.4c-1.4-3-5.7-5.1-11.3-5.1zm-3.3 6.6c-.8 0-1.4-.6-1.4-1.3s.6-1.3 1.4-1.3 1.4.6 1.4 1.3-.7 1.3-1.4 1.3zm6.5 0c-.8 0-1.4-.6-1.4-1.3s.6-1.3 1.4-1.3 1.4.6 1.4 1.3-.6 1.3-1.4 1.3zM29.1 19.8c0-3.9-3.9-7-8.7-7s-8.7 3.1-8.7 7 3.9 7 8.7 7c1 0 2-.2 2.9-.5l2.9 1.5-.8-2.5c2.3-1.3 3.7-3.3 3.7-5.5zm-11.5-1.2c-.7 0-1.2-.5-1.2-1.1s.5-1.1 1.2-1.1 1.2.5 1.2 1.1-.5 1.1-1.2 1.1zm5.7 0c-.7 0-1.2-.5-1.2-1.1s.5-1.1 1.2-1.1 1.2.5 1.2 1.1-.5 1.1-1.2 1.1z"/></svg>`,
+    facebook:`<svg viewBox="0 0 32 32" aria-hidden="true"><path d="M18.6 30V17.2h4.3l.7-5h-5V9c0-1.4.4-2.4 2.5-2.4h2.7V2.1c-.5-.1-2.1-.2-4-.2-4 0-6.8 2.5-6.8 7v3.9H8.5v5H13V30h5.6z"/></svg>`,
+    x:`<svg viewBox="0 0 32 32" aria-hidden="true"><path d="M18.8 13.7 29.8 1h-2.6l-9.6 11.1L10 1H1.2l11.5 16.7L1.2 31h2.6l10-11.6L21.8 31h8.8L18.8 13.7zm-3.5 4.1-1.2-1.7L4.9 3h3.8l7.5 10.7 1.2 1.7 9.8 14h-3.8l-8.1-11.6z"/></svg>`,
+    linkedin:`<svg viewBox="0 0 32 32" aria-hidden="true"><path d="M7.3 10.5H2.1V30h5.2V10.5zM4.7 1.2C3 1.2 1.8 2.4 1.8 4s1.1 2.8 2.8 2.8h.1c1.8 0 2.9-1.2 2.9-2.8S6.5 1.2 4.7 1.2zM30.2 18.8c0-5.2-2.8-8.7-7.3-8.7-3.3 0-4.8 1.8-5.6 3.1v-2.7h-5.2c.1 1.8 0 19.5 0 19.5h5.2V19.1c0-.6 0-1.2.2-1.6.5-1.2 1.6-2.4 3.4-2.4 2.4 0 3.4 1.8 3.4 4.5V30h5.2V18.8h.7z"/></svg>`
+  };
+  function render(settings){
+    const s = {...DEFAULT_CONTACT, ...getCached(), ...(settings||{})};
+    window.sabaCurrentContactSettings = s;
+    saveCached(s);
+    const email=esc(s.email), phone=esc(s.phone);
+    const topbar=document.querySelector(".contact-topbar, .topbar, .top-bar, .announcement, .top-contact");
+    if(topbar){
+      topbar.classList.add("contact-topbar");
+      topbar.innerHTML=`<div class="top-contact-left"><span data-lang="ka">${esc(s.topbar_text_ka)}</span><span data-lang="en">${esc(s.topbar_text_en)}</span></div><div class="top-contact-right"><a id="topEmail" href="mailto:${email}?subject=Contact%20from%20SABA%20website">${email}</a><span>•</span><a id="topPhone" href="tel:${phone}">${phone}</a></div>`;
+    }
+    document.querySelectorAll("a[href^='mailto:']").forEach(a=>{a.href=`mailto:${email}?subject=Contact%20from%20SABA%20website`; if((a.textContent||"").includes("@")) a.textContent=s.email;});
+    document.querySelectorAll("a[href^='tel:']").forEach(a=>{a.href=`tel:${phone}`; if((a.textContent||"").match(/\d/)) a.textContent=s.phone;});
+    const buttons=document.getElementById("footerContactButtons");
+    if(buttons){
+      const wa=phoneForApp(s.whatsapp_number || s.phone), wc=phoneForApp(s.wechat_number || s.phone);
+      const links=[wa?["whatsapp","WhatsApp",`https://wa.me/${wa}`]:null,wc?["wechat","WeChat",`weixin://dl/chat?${wc}`]:null,s.facebook_url?["facebook","Facebook",normalizeUrl(s.facebook_url)]:null,s.x_url?["x","X",normalizeUrl(s.x_url)]:null,s.linkedin_url?["linkedin","LinkedIn",normalizeUrl(s.linkedin_url)]:null].filter(Boolean);
+      buttons.innerHTML=links.map(([cls,label,url])=>`<a class="${cls}" href="${esc(url)}" target="_blank" rel="noopener noreferrer" title="${label}">${icons[cls]}<span>${label}</span></a>`).join("");
+    }
+  }
+  async function load(){
+    render(getCached());
+    try{
+      const res=await fetch("/api/settings?ts="+Date.now(), {cache:"no-store"});
+      if(res.ok){const data=await res.json(); render(data||{});}
+    }catch(e){}
+  }
+  document.addEventListener("DOMContentLoaded", function(){
+    load();
+    setTimeout(load, 300);
+    setTimeout(load, 1200);
+  });
+  window.sabaRenderContactSettings = render;
+})();
+</script>
+
+</body>
+</html>

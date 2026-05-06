@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="ka">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>SABA Admin Panel</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<style>
+:root{--dark:#0b1726;--blue:#0b5ea8;--muted:#6d7785;--border:#e4ebf4}
+*{box-sizing:border-box}body{margin:0;font-family:Arial,Helvetica,sans-serif;background:linear-gradient(135deg,#07111c,#0b1726);color:#fff}
+.container{width:min(1180px,calc(100% - 28px));margin:auto;padding:28px 0}
+.top{display:flex;justify-content:space-between;align-items:center;gap:18px;margin-bottom:20px;flex-wrap:wrap}
+h1,h2,h3{margin:0 0 14px}a{color:#8fd0ff;text-decoration:none;font-weight:800}
+.card{background:rgba(255,255,255,.97);color:#263241;border-radius:20px;padding:22px;margin-bottom:18px;box-shadow:0 18px 55px rgba(0,0,0,.22)}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+label{display:block;font-weight:800;color:#344256;font-size:13px;margin-bottom:12px}input,textarea,select{width:100%;border:1px solid var(--border);border-radius:12px;padding:12px;margin-top:7px;font:inherit}
+textarea{min-height:110px;resize:vertical}button{border:0;border-radius:12px;padding:12px 16px;font-weight:900;cursor:pointer}
+.primary{background:linear-gradient(135deg,var(--blue),#1378d1);color:#fff}.secondary{background:#edf3fa;color:#263241}.danger{background:#c0392b;color:#fff}
+.actions{display:flex;gap:8px;flex-wrap:wrap}.project-item{display:grid;grid-template-columns:1fr auto;gap:14px;border-top:1px solid var(--border);padding:14px 0;align-items:center}
+.muted{color:var(--muted)}.notice{background:#fff8e8;border:1px solid #f2d79a;color:#6c4a00;border-radius:14px;padding:12px;margin-bottom:16px}.hidden{display:none}
+#pinMap{height:320px;border:1px solid #dde8f4;border-radius:16px;margin-top:12px;background:#eef5fb}.leaflet-container{border-radius:16px}.section-divider{height:1px;background:#e8edf5;margin:20px 0}.category-box{border:1px solid #e8edf5;border-radius:18px;padding:16px;background:#fafcff}
+.small{font-size:12px}
+@media(max-width:900px){.grid,.grid-3,.project-item{grid-template-columns:1fr}}
+
+/* Automatic photo sizing */
+img{
+  max-width:100%;
+  height:auto;
+}
+.project-card-image,
+.gallery-card-img,
+.detail-image,
+.header{
+  background-size:cover !important;
+  background-position:center !important;
+  background-repeat:no-repeat !important;
+}
+
+
+/* Contact settings section */
+.contact-settings-grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:14px;
+}
+.contact-settings-grid .full{
+  grid-column:1 / -1;
+}
+@media(max-width:800px){
+  .contact-settings-grid{
+    grid-template-columns:1fr;
+  }
+}
+
+
+/* FINAL visible contact/social admin panel */
+.final-contact-panel{
+  background:#ffffff;
+  border:1px solid #dfe8f3;
+  border-radius:18px;
+  padding:20px;
+  margin:20px 0;
+  box-shadow:0 12px 30px rgba(11,23,38,.08);
+}
+.final-contact-panel h2{
+  margin:0 0 14px;
+}
+.final-contact-grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:14px;
+}
+.final-contact-grid label{
+  display:grid;
+  gap:7px;
+  font-weight:800;
+}
+.final-contact-grid .full{
+  grid-column:1 / -1;
+}
+.final-contact-grid input{
+  width:100%;
+}
+@media(max-width:800px){
+  .final-contact-grid{grid-template-columns:1fr;}
+  .final-contact-grid .full{grid-column:auto;}
+}
+
+
+/* FINAL: contact/social settings are protected inside admin area */
+.contact-admin-grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:14px;
+}
+.contact-admin-grid .full{
+  grid-column:1 / -1;
+}
+@media(max-width:800px){
+  .contact-admin-grid{grid-template-columns:1fr;}
+  .contact-admin-grid .full{grid-column:auto;}
+}
+
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="top">
+    <div>
+      <h1>SABA Admin Panel</h1>
+      <div class="muted">Projects + site settings + main/project page category images + header logo</div>
+    </div>
+    <a href="index.html">← Back to website</a>
+  </div>
+
+  <div class="card" id="loginCard">
+    <h2>Login</h2>
+    <label>Admin password <input type="password" id="adminPassword"></label>
+    <button class="primary" onclick="login()">Open admin</button>
+  </div>
+
+  <div id="adminArea" class="hidden">
+    <div class="notice"><b>How it works:</b> category titles, descriptions and images will update both the <b>main page</b> and the <b>projects page</b>. Header logo also updates on both pages.</div>
+
+    <form class="card" id="siteSettingsForm">
+      <h2>Site settings</h2>
+      <div class="grid">
+        <label>Header logo URL
+          <input id="logo_url" placeholder="https://example.com/logo.png">
+          <div class="muted small">Paste direct image URL or Google Drive thumbnail URL. Example: https://drive.google.com/thumbnail?id=FILE_ID&sz=w400</div>
+        </label>
+        <label>Logo alt text
+          <input id="logo_alt" placeholder="SABA">
+        </label>
+      </div>
+
+      <div class="section-divider"></div>
+      <h3>Main / Projects category cards</h3>
+
+      <div class="category-box">
+        <h3>Water category</h3>
+        <div class="grid">
+          <label>Title GE <input id="water_title_ka"></label>
+          <label>Title EN <input id="water_title_en"></label>
+        </div>
+        <div class="grid">
+          <label>Description GE <textarea id="water_description_ka"></textarea></label>
+          <label>Description EN <textarea id="water_description_en"></textarea></label>
+        </div>
+        <label>Background image URL <input id="water_image_url"></label>
+      </div>
+
+      <div class="category-box" style="margin-top:14px">
+        <h3>Roads / Civil category</h3>
+        <div class="grid">
+          <label>Title GE <input id="roads_title_ka"></label>
+          <label>Title EN <input id="roads_title_en"></label>
+        </div>
+        <div class="grid">
+          <label>Description GE <textarea id="roads_description_ka"></textarea></label>
+          <label>Description EN <textarea id="roads_description_en"></textarea></label>
+        </div>
+        <label>Background image URL <input id="roads_image_url"></label>
+      </div>
+
+      <div class="category-box" style="margin-top:14px">
+        <h3>Drainage / Sewerage category</h3>
+        <div class="grid">
+          <label>Title GE <input id="drainage_title_ka"></label>
+          <label>Title EN <input id="drainage_title_en"></label>
+        </div>
+        <div class="grid">
+          <label>Description GE <textarea id="drainage_description_ka"></textarea></label>
+          <label>Description EN <textarea id="drainage_description_en"></textarea></label>
+        </div>
+        <label>Background image URL <input id="drainage_image_url"></label>
+      </div>
+
+      <div class="actions" style="margin-top:18px">
+        <button class="primary" type="submit">Save site settings</button>
+      </div>
+    </form>
+
+    <form class="card" id="projectForm">
+      <h2 id="formTitle">Add project</h2>
+      <div class="notice"><b>City pin:</b> type city name, click “Find city and pin on map”, then save. You can also click on map manually.</div>
+      <input type="hidden" id="projectId">
+      <div class="grid"><label>Title GE <input id="title_ka" required></label><label>Title EN <input id="title_en" required></label></div>
+      <label>Category<select id="category"><option value="water">Water Infrastructure</option><option value="roads">Roads</option><option value="civil">Civil Works</option><option value="concrete">Concrete Works</option><option value="drainage">Drainage</option><option value="sewerage">Sewerage</option></select></label>
+      <div class="grid"><label>Description GE <textarea id="description_ka" required></textarea></label><label>Description EN <textarea id="description_en" required></textarea></label></div>
+      <div class="grid"><label>City GE <input id="city_ka" placeholder="მაგ: თბილისი"></label><label>City EN <input id="city_en" placeholder="Example: Tbilisi"></label></div>
+      <div class="grid"><label>Location GE <input id="location_ka" placeholder="თბილისი, საქართველო"></label><label>Location EN <input id="location_en" placeholder="Tbilisi, Georgia"></label></div>
+      <div class="actions"><button type="button" class="secondary" onclick="findCityAndPin()">Find city and pin on map</button><button type="button" class="secondary" onclick="clearPin()">Clear pin</button></div>
+      <div id="pinMap"></div>
+      <div class="grid"><label>Latitude <input id="latitude"></label><label>Longitude <input id="longitude"></label></div>
+      <div class="grid"><label>Status GE <input id="status_ka"></label><label>Status EN <input id="status_en"></label></div>
+      <label>Image URL <input id="image_url"></label><label>Sort order <input id="sort_order" type="number" value="0"></label>
+      <div class="actions"><button class="primary" type="submit">Save project</button><button class="secondary" type="button" onclick="clearForm()">Clear</button></div>
+    </form>
+
+    <div class="card"><h2>Projects</h2><div id="projectList" class="muted">Loading...</div></div>
+
+    <form class="card" id="contactSettingsForm">
+      <h2>Top Contact Bar and Footer Social Links</h2>
+      <div class="notice">These fields change the top contact text/email/phone and the Contact us box in the footer.</div>
+      <div class="contact-admin-grid">
+        <label class="full">Top text GE
+          <input id="topbar_text_ka" placeholder="ინფრასტრუქტურული და სამშენებლო გადაწყვეტილებები საქართველოში">
+        </label>
+        <label class="full">Top text EN
+          <input id="topbar_text_en" placeholder="Infrastructure and construction solutions in Georgia">
+        </label>
+        <label>Email
+          <input id="email" placeholder="info@sabagroup.org">
+        </label>
+        <label>Phone
+          <input id="phone" placeholder="+0322995406">
+        </label>
+        <label>WhatsApp number
+          <input id="whatsapp_number" placeholder="+0322995406">
+        </label>
+        <label>WeChat number
+          <input id="wechat_number" placeholder="+0322995406">
+        </label>
+        <label>Facebook URL
+          <input id="facebook_url" placeholder="https://facebook.com/...">
+        </label>
+        <label>X URL
+          <input id="x_url" placeholder="https://x.com/...">
+        </label>
+        <label class="full">LinkedIn URL
+          <input id="linkedin_url" placeholder="https://linkedin.com/company/...">
+        </label>
+      </div>
+      <div class="actions" style="margin-top:18px">
+        <button class="primary" type="submit">Save contact settings</button>
+      </div>
+    </form>
+
+  </div>
+</div>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+
+function normalizeImageUrl(url, size = 1600){
+  if(!url) return "";
+
+  let value = String(url).trim();
+
+  // Google Drive formats:
+  // https://drive.google.com/file/d/FILE_ID/view?usp=sharing
+  // https://drive.google.com/open?id=FILE_ID
+  // https://drive.google.com/uc?id=FILE_ID
+  // https://drive.google.com/thumbnail?id=FILE_ID
+  let driveId = "";
+
+  const fileMatch = value.match(/drive\.google\.com\/file\/d\/([^/]+)/i);
+  if(fileMatch && fileMatch[1]) driveId = fileMatch[1];
+
+  const idMatch = value.match(/[?&]id=([^&]+)/i);
+  if(!driveId && idMatch && idMatch[1]) driveId = idMatch[1];
+
+  if(driveId){
+    return `https://drive.google.com/thumbnail?id=${encodeURIComponent(driveId)}&sz=w${size}`;
+  }
+
+  return value;
+}
+
+function cssImageUrl(url, size = 1600){
+  const normalized = normalizeImageUrl(url, size);
+  return normalized ? `url('${String(normalized).replace(/'/g, "")}')` : "";
+}
+
+function applyResponsiveImages(){
+  document.querySelectorAll("img").forEach(img=>{
+    if(!img.dataset.originalSrc){
+      img.dataset.originalSrc = img.getAttribute("src") || "";
+    }
+
+    const fixed = normalizeImageUrl(img.dataset.originalSrc || img.getAttribute("src"), 1600);
+    if(fixed && img.getAttribute("src") !== fixed){
+      img.setAttribute("src", fixed);
+    }
+
+    img.setAttribute("loading", "lazy");
+    img.style.maxWidth = "100%";
+    img.style.height = img.style.height || "auto";
+    img.style.objectFit = img.style.objectFit || "cover";
+
+    img.onerror = function(){
+      this.onerror = null;
+      this.src = "https://images.unsplash.com/photo-1541888946425-d81bb19240f5?auto=format&fit=crop&w=1200&q=80";
+    };
+  });
+}
+
+document.addEventListener("DOMContentLoaded", applyResponsiveImages);
+
+</script>
+<script>
+let adminPassword="",projects=[],pinMap,pinMarker;
+const settingsFields=["logo_url","logo_alt","water_title_ka","water_title_en","water_description_ka","water_description_en","water_image_url","roads_title_ka","roads_title_en","roads_description_ka","roads_description_en","roads_image_url","drainage_title_ka","drainage_title_en","drainage_description_ka","drainage_description_en","drainage_image_url","topbar_text_ka","topbar_text_en","email","phone","whatsapp_number","wechat_number","facebook_url","x_url","linkedin_url"];
+
+function login(){
+  adminPassword=document.getElementById("adminPassword").value.trim();
+  if(!adminPassword)return alert("Enter admin password.");
+  document.getElementById("loginCard").classList.add("hidden");
+  document.getElementById("adminArea").classList.remove("hidden");
+  initPinMap();
+  loadSiteSettings();
+  loadProjects();
+}
+function initPinMap(){
+  if(pinMap)return;
+  pinMap=L.map("pinMap").setView([42.3154,43.3569],7);
+  fetch("https://nominatim.openstreetmap.org/search?country=georgia&polygon_geojson=1&format=json")
+    .then(r=>r.json())
+    .then(data=>{if(data&&data[0]&&data[0].geojson){L.geoJSON(data[0].geojson,{style:{color:"#1378d1",weight:2,fillColor:"#eaf3fb",fillOpacity:1}}).addTo(pinMap)}})
+    .catch(()=>{});
+  pinMap.on("click",e=>setPin(e.latlng.lat,e.latlng.lng));
+}
+function setPin(lat,lng){
+  document.getElementById("latitude").value=Number(lat).toFixed(7);
+  document.getElementById("longitude").value=Number(lng).toFixed(7);
+  if(!pinMarker)pinMarker=L.marker([lat,lng],{draggable:true}).addTo(pinMap); else pinMarker.setLatLng([lat,lng]);
+  pinMap.setView([lat,lng],11);
+  pinMarker.on("dragend",()=>{const p=pinMarker.getLatLng();document.getElementById("latitude").value=p.lat.toFixed(7);document.getElementById("longitude").value=p.lng.toFixed(7);});
+}
+function clearPin(){document.getElementById("latitude").value="";document.getElementById("longitude").value="";if(pinMarker)pinMap.removeLayer(pinMarker);pinMarker=null;}
+async function findCityAndPin(){const city=document.getElementById("city_en").value||document.getElementById("city_ka").value||document.getElementById("location_en").value||document.getElementById("location_ka").value;if(!city)return alert("Write city name first.");const url="https://nominatim.openstreetmap.org/search?format=json&q="+encodeURIComponent(city+", Georgia")+"&limit=1";const r=await fetch(url);const data=await r.json();if(data&&data[0]){setPin(parseFloat(data[0].lat),parseFloat(data[0].lon));if(!document.getElementById("location_en").value)document.getElementById("location_en").value=data[0].display_name;if(!document.getElementById("city_en").value)document.getElementById("city_en").value=city;}else alert("City not found.");}
+async function api(method,body,id){const url=id?"/api/projects?id="+encodeURIComponent(id):"/api/projects";const response=await fetch(url,{method,headers:{"Content-Type":"application/json","X-Admin-Password":adminPassword},body:body?JSON.stringify(body):undefined});const data=await response.json().catch(()=>({}));if(!response.ok)throw new Error(data.error||data.message||"Request failed");return data;}
+async function apiSettings(method,body){const response=await fetch("/api/settings",{method,headers:{"Content-Type":"application/json","X-Admin-Password":adminPassword},body:body?JSON.stringify(body):undefined});const data=await response.json().catch(()=>({}));if(!response.ok)throw new Error(data.error||data.message||"Request failed");return data;}
+async function loadSiteSettings(){try{const res=await fetch('/api/settings');const data=await res.json();settingsFields.forEach(id=>{const el=document.getElementById(id);if(el)el.value=data[id]||"";});}catch(error){console.error(error);}}
+async function loadProjects(){const list=document.getElementById("projectList");list.textContent="Loading...";try{const response=await fetch("/api/projects");projects=await response.json();if(!Array.isArray(projects))projects=[];renderProjects();}catch(error){list.textContent="Could not load projects.";}}
+function renderProjects(){const list=document.getElementById("projectList");if(!projects.length){list.innerHTML="No projects yet.";return;}list.innerHTML="";projects.forEach(project=>{const div=document.createElement("div");div.className="project-item";div.innerHTML=`<div><b>${escapeHtml(project.title_ka||project.title_en)}</b><br><span class="muted">${escapeHtml(project.category||"")} · ${escapeHtml(project.city_ka||project.location_ka||project.city_en||project.location_en||"")}</span></div><div class="actions"><button class="secondary" onclick="editProject('${project.id}')">Edit</button><button class="danger" onclick="deleteProject('${project.id}')">Delete</button></div>`;list.appendChild(div);});}
+function editProject(id){const p=projects.find(x=>x.id===id);if(!p)return;["title_ka","title_en","category","description_ka","description_en","city_ka","city_en","location_ka","location_en","latitude","longitude","status_ka","status_en","image_url","sort_order"].forEach(field=>{const el=document.getElementById(field);if(el)el.value=p[field]||"";});document.getElementById("projectId").value=p.id;document.getElementById("formTitle").textContent="Edit project";if(p.latitude&&p.longitude)setPin(p.latitude,p.longitude);window.scrollTo({top:document.getElementById('projectForm').offsetTop-20,behavior:"smooth"});}
+function clearForm(){document.getElementById("projectForm").reset();document.getElementById("projectId").value="";document.getElementById("sort_order").value="0";document.getElementById("formTitle").textContent="Add project";clearPin();}
+async function deleteProject(id){if(!confirm("Delete this project?"))return;try{await api("DELETE",null,id);await loadProjects();}catch(error){alert(error.message);}}
+document.getElementById("projectForm").addEventListener("submit",async event=>{event.preventDefault();const id=document.getElementById("projectId").value;const body={title_ka:val("title_ka"),title_en:val("title_en"),category:val("category"),description_ka:val("description_ka"),description_en:val("description_en"),city_ka:val("city_ka"),city_en:val("city_en"),location_ka:val("location_ka"),location_en:val("location_en"),latitude:val("latitude")?Number(val("latitude")):null,longitude:val("longitude")?Number(val("longitude")):null,status_ka:val("status_ka"),status_en:val("status_en"),image_url:normalizeImageUrl(val("image_url"),1600),sort_order:Number(val("sort_order")||0)};try{if(id)await api("PUT",{id,...body});else await api("POST",body);clearForm();await loadProjects();alert("Saved.");}catch(error){alert(error.message);}});
+document.getElementById("siteSettingsForm").addEventListener("submit",async event=>{event.preventDefault();const payload={
+        ...readContactSettingsPayload(),};settingsFields.forEach(id=>payload[id]=val(id));["logo_url","water_image_url","roads_image_url","drainage_image_url"].forEach(id=>{if(payload[id]) payload[id]=normalizeImageUrl(payload[id], id==="logo_url"?1000:1600);});try{await apiSettings('PUT',payload);localStorage.setItem("saba_site_settings_cache", JSON.stringify(payload));alert('Site settings saved.');}catch(error){alert(error.message);}});
+function val(id){return document.getElementById(id).value;}
+function escapeHtml(value){return String(value||"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]));}
+
+
+const contactSettingKeys = ["topbar_text_ka","topbar_text_en","email","phone","whatsapp_number","wechat_number","facebook_url","x_url","linkedin_url"];
+
+function fillContactSettings(settings){
+  contactSettingKeys.forEach(key=>{
+    const el=document.getElementById(key);
+    if(el) el.value = settings && settings[key] ? settings[key] : "";
+  });
+}
+
+function readContactSettingsPayload(){
+  const payload={};
+  contactSettingKeys.forEach(key=>{
+    const el=document.getElementById(key);
+    if(el) payload[key] = el.value.trim();
+  });
+  return payload;
+}
+
+</script>
+
+
+<script>
+const sabaContactKeys = ["topbar_text_ka","topbar_text_en","email","phone","whatsapp_number","wechat_number","facebook_url","x_url","linkedin_url"];
+
+function sabaFillContactFields(settings){
+  sabaContactKeys.forEach(key=>{
+    const el = document.getElementById(key);
+    if(el) el.value = settings && settings[key] ? settings[key] : "";
+  });
+}
+
+function sabaReadContactFields(){
+  const payload = {};
+  sabaContactKeys.forEach(key=>{
+    const el = document.getElementById(key);
+    if(el) payload[key] = el.value.trim();
+  });
+  return payload;
+}
+
+async function sabaLoadContactSettings(){
+  try{
+    const res = await fetch("/api/settings");
+    const data = await res.json();
+    sabaFillContactFields(data || {});
+  }catch(e){}
+}
+
+document.addEventListener("DOMContentLoaded", function(){
+  sabaLoadContactSettings();
+
+  const form = document.getElementById("contactSettingsForm");
+  if(form){
+    form.addEventListener("submit", async function(e){
+      e.preventDefault();
+      const password = (window.adminPassword || document.getElementById("adminPassword")?.value || "").trim();
+      if(!password){
+        alert("Enter admin password first.");
+        return;
+      }
+      try{
+        const res = await fetch("/api/settings", {
+          method:"PUT",
+          headers:{
+            "Content-Type":"application/json",
+            "X-Admin-Password":password
+          },
+          body:JSON.stringify(sabaReadContactFields())
+        });
+        const data = await res.json().catch(()=>({}));
+        if(!res.ok) throw new Error(data.error || "Could not save contact settings.");
+        alert("Contact settings saved.");
+      }catch(error){
+        alert(error.message);
+      }
+    });
+  }
+
+  // Merge contact values into the existing Site Settings save request too.
+  const oldFetch = window.fetch;
+  window.fetch = function(input, init){
+    try{
+      const url = typeof input === "string" ? input : (input && input.url ? input.url : "");
+      if(url.includes("/api/settings") && init && init.body && (init.method === "PUT" || init.method === "POST")){
+        const oldBody = JSON.parse(init.body);
+        init.body = JSON.stringify({...oldBody, ...sabaReadContactFields()});
+      }
+    }catch(e){}
+    return oldFetch(input, init);
+  };
+});
+</script>
+
+
+
+<script>
+/* FINAL FIX: robust admin contact settings save. Removes older duplicate submit handlers and keeps a local cache. */
+(function(){
+  const CONTACT_KEYS=["topbar_text_ka","topbar_text_en","email","phone","whatsapp_number","wechat_number","facebook_url","x_url","linkedin_url"];
+  const CACHE_KEY="sabaContactSettings";
+  function readFields(){const p={}; CONTACT_KEYS.forEach(k=>{const el=document.getElementById(k); if(el) p[k]=el.value.trim();}); return p;}
+  function fillFields(data){CONTACT_KEYS.forEach(k=>{const el=document.getElementById(k); if(el && data && data[k] !== undefined && data[k] !== null) el.value=data[k];});}
+  function cache(data){try{localStorage.setItem(CACHE_KEY, JSON.stringify(data||{}));}catch(e){}}
+  function cached(){try{return JSON.parse(localStorage.getItem(CACHE_KEY)||"{}");}catch(e){return {};}}
+  async function loadContactSettingsFinal(){
+    fillFields(cached());
+    try{
+      const res=await fetch('/api/settings?ts='+Date.now(), {cache:'no-store'});
+      if(res.ok){const data=await res.json(); fillFields(data||{}); cache({...cached(), ...(data||{})});}
+    }catch(e){}
+  }
+  async function saveContactSettingsFinal(e){
+    if(e){e.preventDefault(); e.stopPropagation(); e.stopImmediatePropagation();}
+    const password=(document.getElementById('adminPassword')?.value || '').trim();
+    if(!password){alert('Enter admin password first.'); return;}
+    const payload=readFields();
+    cache({...cached(), ...payload});
+    try{
+      const res=await fetch('/api/settings', {method:'PUT', headers:{'Content-Type':'application/json','X-Admin-Password':password}, body:JSON.stringify(payload)});
+      const data=await res.json().catch(()=>({}));
+      if(!res.ok) throw new Error(data.error || 'Could not save contact settings.');
+      cache({...cached(), ...(data||{}), ...payload});
+      alert('Contact settings saved. Refresh the website page with Ctrl+F5.');
+    }catch(error){
+      alert('Contact settings saved only in this browser, but server save failed. In Supabase, run final_contact_social_settings.sql first. Error: ' + error.message);
+    }
+  }
+  document.addEventListener('DOMContentLoaded', function(){
+    loadContactSettingsFinal();
+    const old=document.getElementById('contactSettingsForm');
+    if(old){
+      const fresh=old.cloneNode(true);
+      old.parentNode.replaceChild(fresh, old);
+      fresh.addEventListener('submit', saveContactSettingsFinal, true);
+      fillFields(cached());
+    }
+    window.sabaLoadContactSettingsFinal=loadContactSettingsFinal;
+    window.sabaSaveContactSettingsFinal=saveContactSettingsFinal;
+  });
+})();
+</script>
+
+</body>
+</html>

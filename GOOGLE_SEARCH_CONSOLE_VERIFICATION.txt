@@ -1,0 +1,9 @@
+Google Search Console verification tag added:
+
+<meta name="google-site-verification" content="03oPsEvgyJRV7Co5yqfcudv4NznLyyk_io3KjrNcHC0" />
+
+After uploading to Netlify:
+1. Open https://saba.company/
+2. View page source and confirm the meta tag exists in <head>
+3. Go back to Google Search Console and click Verify
+4. Submit sitemap.xml
