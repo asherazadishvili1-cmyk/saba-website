@@ -457,18 +457,22 @@ document.addEventListener("DOMContentLoaded", function(){
   }
   async function saveContactSettingsFinal(e){
     if(e){e.preventDefault(); e.stopPropagation(); e.stopImmediatePropagation();}
-    const password=(document.getElementById('adminPassword')?.value || '').trim();
+    const password=(window.adminPassword || document.getElementById('adminPassword')?.value || '').trim();
     if(!password){alert('Enter admin password first.'); return;}
     const payload=readFields();
-    cache({...cached(), ...payload});
     try{
-      const res=await fetch('/api/settings', {method:'PUT', headers:{'Content-Type':'application/json','X-Admin-Password':password}, body:JSON.stringify(payload)});
+      let current={};
+      const currentRes=await fetch('/api/settings?ts='+Date.now(), {cache:'no-store'});
+      if(currentRes.ok) current=await currentRes.json();
+      const finalPayload={...(current||{}), ...payload};
+      const res=await fetch('/api/settings', {method:'PUT', headers:{'Content-Type':'application/json','X-Admin-Password':password}, body:JSON.stringify(finalPayload)});
       const data=await res.json().catch(()=>({}));
       if(!res.ok) throw new Error(data.error || 'Could not save contact settings.');
-      cache({...cached(), ...(data||{}), ...payload});
-      alert('Contact settings saved. Refresh the website page with Ctrl+F5.');
+      cache({...cached(), ...(data||{}), ...finalPayload});
+      localStorage.setItem('saba_site_settings_cache', JSON.stringify({...current, ...finalPayload}));
+      alert('Contact settings saved successfully.');
     }catch(error){
-      alert('Contact settings saved only in this browser, but server save failed. In Supabase, run final_contact_social_settings.sql first. Error: ' + error.message);
+      alert('Could not save contact settings: ' + error.message);
     }
   }
   document.addEventListener('DOMContentLoaded', function(){

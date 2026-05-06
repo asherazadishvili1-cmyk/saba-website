@@ -1672,6 +1672,24 @@ footer .footer-share-buttons a,
 </style>
 
 <style>
+
+/* Stability fix: keep both footer boxes aligned and text size consistent */
+#footerContactBox,
+footer .footer-share,
+.footer .footer-share{
+  min-height: 124px;
+  align-self: stretch;
+}
+#footerContactBox .footer-share-title,
+footer .footer-share .footer-share-title{
+  font-size: 14px;
+  line-height: 1.2;
+}
+#footerContactButtons a,
+footer .footer-share-buttons button{
+  font-size: 12px;
+  min-height: 34px;
+}
 /* SABA FIX: remove duplicate upper footer Contact us block */
 #footerContactApps, .footer-contact-apps{display:none!important;}
 </style>
@@ -2313,11 +2331,6 @@ function applyContactSettings(settings){
 
 async function loadSiteSettings() {
       try {
-        const cached = localStorage.getItem("saba_site_settings_cache");
-        if (cached) applySiteSettings(JSON.parse(cached));
-      } catch (e) {}
-
-      try {
         const res = await fetch(`/api/settings?t=${Date.now()}`, { cache: "no-store" });
         const data = await res.json();
         localStorage.setItem("saba_site_settings_cache", JSON.stringify(data || {}));
@@ -2702,11 +2715,11 @@ document.addEventListener("DOMContentLoaded", async function(){
     }
   }
   async function load(){
-    render(getCached());
     try{
       const res=await fetch("/api/settings?ts="+Date.now(), {cache:"no-store"});
-      if(res.ok){const data=await res.json(); render(data||{});}
+      if(res.ok){const data=await res.json(); render(data||{}); return;}
     }catch(e){}
+    render(getCached());
   }
   document.addEventListener("DOMContentLoaded", function(){
     load();
